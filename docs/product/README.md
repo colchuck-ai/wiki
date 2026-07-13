@@ -29,11 +29,16 @@ Maximize the proportion of statements in the reference that trace to a verifiabl
 
 - **O001-R001** - Cited integration: The product must require every integrated statement to carry a link to its originating source.
 - **O001-R002** - Source revalidation: The product must let a curator detect when a cited source has changed since the statement was captured.
+- **O001-R003** - Captured-source retention: The product must retain the captured form of each integrated statement's originating source, so the statement stays verifiable even if the external source later changes or disappears.
 
 **Risk-Requirement Map**
 
 - **O001-RSK001 - Unsourced capture**: O001-R001 - Cited integration
-- **O001-RSK002 - Source drift**: O001-R002 - Source revalidation
+- **O001-RSK002 - Source drift**: O001-R002 - Source revalidation, O001-R003 - Captured-source retention
+
+**Change Records**
+
+- [CR001 - Captured-source retention](../crs/CR001-captured-source-retention.md)
 
 #### O002 - Complete coverage
 

@@ -22,6 +22,6 @@ Adopt **immutable core, revisable periphery**. The scaffold's core purpose is se
 
 - Enabling: O008's "proportion outside intended purpose" has a stable baseline, so triage (O008-R002) and reconciliation (O008-R003) judgments stay valid over time.
 - Enabling: consumers can rely on the scope contract durably — absence means out-of-scope, not merely unwritten.
-- Enabling: migration needs no bespoke machinery; it falls out of O005 portability. No new product capability is required beyond documenting the workflow (fork the bundle, carry over in-scope concepts, re-anchor the scaffold).
+- Enabling: migration needs no bespoke machinery; it falls out of O005 portability. No new product capability is required beyond documenting the workflow (fork the bundle, carry over in-scope concepts, re-anchor the scaffold). *(Later refined by [ADR005 - Guided Fork-and-Migrate](../../engineering/drs/ADR005-guided-fork-and-migrate.md): the tool adds detection and guidance so a core-purpose rewrite cannot happen silently, while migration mechanics remain O005 portability exactly as stated here.)*
 - Cost: a genuine change of purpose is comparatively heavyweight — a migration rather than an edit. This is intentional friction that protects the anchor's meaning.
 - Cost: the scaffold must distinguish "core purpose" (fixed) from "peripheral boundary/context" (revisable), a line that can be fuzzy; the steward adjudicates it as an act of intent.

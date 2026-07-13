@@ -34,21 +34,18 @@ See [C001 - Inbox](components/C001-inbox.md).
 
 ### C002 - Scope Triage
 
-Adjudicates each inbox item against the declared scaffold scope, capturing the steward's keep, merge, deprecate, or discard direction and flagging out-of-scope items for judgment rather than integrating them automatically.
+Adjudicates each inbox item against the declared scaffold scope, capturing the steward's keep, merge, deprecate, or discard direction and flagging out-of-scope items for judgment rather than integrating them automatically. When an item overlaps an existing concept, surfaces the overlapping concept(s) so a merge direction can be steered against a concrete target rather than issued blind.
 
 **Relationships**
 
 - **C010 - Scaffold**: reads the declared purpose and scope to evaluate each item.
-- **C003 - Integration Authoring**: forwards kept or merged items, with steward intent, for authoring.
+- **C003 - Integration Authoring**: forwards kept or merged items, with steward intent and the set of overlapping concepts a merge must reconcile against, for authoring.
 
 ### C003 - Integration Authoring
 
-Turns a triaged item plus steward intent into corpus content: composes the concept, attaches its originating source link, and establishes contextual cross-links to related concepts with the reason for each link stated. The steward supplies intent; this component performs the authoring.
+Turns a triaged item plus steward intent into corpus content — composing the concept, attaching its source link, and cross-linking related concepts with each reason stated — and, when an item overlaps an existing concept, executes the steward-chosen reconciliation rather than authoring blindly.
 
-**Relationships**
-
-- **C004 - OKF Conformance Adapter**: writes all content through the Adapter rather than to files directly.
-- **C005 - Index & Navigation**: registers the new concept and its links so it becomes discoverable.
+See [C003 - Integration Authoring](components/C003-integration-authoring.md).
 
 ### C004 - OKF Conformance Adapter
 
@@ -93,6 +90,7 @@ Marks a concept as deprecated or superseded — with a reason and, where one exi
 
 **Relationships**
 
+- **C003 - Integration Authoring**: deprecates a superseded statement, with a replacement pointer, when a merge reconciliation supersedes it.
 - **C005 - Index & Navigation**: consults inbound links before deprecating or relocating a concept.
 
 ### C009 - Coverage Review
@@ -106,12 +104,9 @@ Supports periodically reviewing which areas of knowledge are represented against
 
 ### C010 - Scaffold
 
-Lets the steward declare the reference's purpose and scope as an optional, persistent anchor that endures for the life of the reference, and supports periodically reconciling the graph against that declared scope to surface content that has drifted out of scope.
+Lets the steward declare the reference's purpose and scope as an optional, persistent anchor that endures for the life of the reference; detects a scaffold edit that would change the immutable core purpose and routes the steward to fork-and-migrate rather than applying it in place; and supports periodically reconciling the graph against the declared scope to surface drifted content.
 
-**Relationships**
-
-- **C002 - Scope Triage**: provides the scope contract each incoming item is adjudicated against.
-- **C005 - Index & Navigation**: traverses the graph during reconciliation to find drifted content.
+See [C010 - Scaffold](components/C010-scaffold.md).
 
 ## Requirement-Component Map
 

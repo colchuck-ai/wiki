@@ -4,11 +4,11 @@ Wiki is hired by a **team or organization knowledge steward** to turn raw materi
 
 The steward works by **intent and judgment, never by hand**: they feed raw material into an inbox and direct what happens to it — keep, merge, deprecate, discard — while the tool performs all authoring, linking, and metadata and keeps the corpus OKF-conformant. Because the inbox is **producer-agnostic**, automated producers (including OKF's own reference agent) can deposit material for the steward to adjudicate; so too can an agent or teammate *consuming* the reference, filing a synthesized answer back as a new deposit. Wiki governs the integration, it does not monopolize production.
 
-A reference that knows its purpose can declare it in an optional **scaffold** — normally up front, or retrofitted once a maturing reference discovers its boundary. The scaffold is a persistent anchor the steward articulates and the tool maintains for the life of the reference; it ranges from a single statement of intent to a fuller set of boundaries and context, and it keeps an otherwise emergent knowledge graph tethered to the end it serves. Its core purpose is fixed — redefining that purpose constitutes a new reference, to which existing knowledge may be migrated, rather than an edit.
+A reference that knows its purpose can declare it in an optional **scaffold** — normally up front, or retrofitted once a maturing reference discovers its boundary. The scaffold is a persistent anchor the steward articulates and the tool maintains for the life of the reference; it ranges from a single statement of intent to a fuller set of boundaries and context, and it keeps an otherwise emergent knowledge graph tethered to the end it serves. Its core purpose is revisable in place: a deliberate revision triggers a reconciliation of the corpus against the new purpose — surfacing and correcting what has drifted — rather than a fork to a separate reference, with version control preserving the prior state.
 
 Wiki composes with a Zettelkasten rather than competing with it: **Wiki curates** the shared, cited source-of-record, and a Zettelkasten in the same project **consumes Wiki as source material and synthesizes** it into personal thinking notes — a *curate → synthesize* pipeline. A synthesis produced while consuming the reference — by a teammate, a consuming agent, or that Zettelkasten — can itself be deposited back into the inbox as any other producer's material, so exploration compounds into the shared record rather than disappearing into a chat log.
 
-Non-goals: Wiki is not an unattended enrichment pipeline for a single source system (that is what OKF's reference agent demonstrates), not a personal thinking tool (that is the Zettelkasten), and not a definition of the storage format (that is OKF). Nor does Wiki own a query surface: a consumer reads and queries the curated corpus with standard OKF tooling, and any answer worth keeping re-enters through the same producer-agnostic inbox rather than through a Wiki-specific query feature.
+Non-goals: Wiki is not an unattended enrichment pipeline for a single source system (that is what OKF's reference agent demonstrates), not a personal thinking tool (that is the Zettelkasten), and not a definition of the storage format (that is OKF). Nor does Wiki own a persisted, standalone query product: the curation Skill's Query is a stateless read convenience over the curated corpus (which a consumer can equally read and query with standard OKF tooling), and any answer worth keeping re-enters through the same producer-agnostic inbox rather than through a Wiki-specific query feature.
 
 ## Jobs
 
@@ -55,13 +55,21 @@ Minimize the likelihood that knowledge the team relies on is absent from the ref
 
 - **O002-R001** - Inbox intake: The product must provide a single inbox where raw material is captured the moment it arrives, so nothing relied upon is lost before it can be triaged.
 - **O002-R002** - Backlog visibility: The product must make the count and age of un-integrated inbox items visible so a growing backlog cannot go unnoticed.
-- **O002-R003** - Coverage review: The product must support periodically reviewing which areas of knowledge are represented against what the team actually relies on.
+- **O002-R003** - Coverage review: The product must support periodically reviewing which areas of knowledge are represented against the reference's declared scope and other measurable coverage signals (dangling links, agent-proposed gaps), surfacing gaps for the steward, who supplies the judgment of what the team relies on (see [PDR003 - Reliance Is Steward-Supplied](drs/PDR003-reliance-steward-supplied.md)).
 
 **Risk-Requirement Map**
 
 - **O002-RSK001 - Pre-integration loss**: O002-R001 - Inbox intake
 - **O002-RSK002 - Silent scope gaps**: O002-R003 - Coverage review
 - **O002-RSK003 - Untracked backlog**: O002-R002 - Backlog visibility
+
+**Product Decision Records**
+
+- [PDR003 - Reliance Is Steward-Supplied](drs/PDR003-reliance-steward-supplied.md)
+
+**Change Records**
+
+- [CR010 - Reliance Signal Reframe](../crs/CR010-reliance-signal-reframe.md)
 
 #### O003 - Fast discovery
 
@@ -145,12 +153,20 @@ Minimize the proportion of the knowledge a consumer encounters that is obsolete,
 **Requirements**
 
 - **O006-R001** - Deprecation over deletion: The product must support marking a concept as deprecated or superseded — with a reason and, where one exists, a pointer to its replacement — rather than only hard-deleting it.
-- **O006-R002** - Retirement review: The product must support periodically identifying concepts no longer relied upon as candidates for pruning.
+- **O006-R002** - Retirement review: The product must support periodically identifying pruning candidates from measurable signals — staleness, source drift, and supersession — and the declared scope, for the steward's retirement judgment (see [PDR003 - Reliance Is Steward-Supplied](drs/PDR003-reliance-steward-supplied.md)).
 
 **Risk-Requirement Map**
 
 - **O006-RSK001 - Accretion without removal**: O006-R001 - Deprecation over deletion, O006-R002 - Retirement review
 - **O006-RSK002 - Unmarked supersession**: O006-R001 - Deprecation over deletion
+
+**Product Decision Records**
+
+- [PDR003 - Reliance Is Steward-Supplied](drs/PDR003-reliance-steward-supplied.md)
+
+**Change Records**
+
+- [CR010 - Reliance Signal Reframe](../crs/CR010-reliance-signal-reframe.md)
 
 #### O007 - Low curation effort
 
@@ -193,10 +209,17 @@ Minimize the proportion of the reference that falls outside its intended purpose
 
 **Product Decision Records**
 
-- [PDR001 - Immutable Core Telos](drs/PDR001-immutable-core-telos.md)
+- [PDR004 - Revisable Core Purpose](drs/PDR004-revisable-core-purpose.md)
+- [PDR001 - Immutable Core Telos](drs/PDR001-immutable-core-telos.md) (superseded by PDR004)
+
+**Change Records**
+
+- [CR011 - Revisable Core Purpose](../crs/CR011-revisable-core-purpose.md)
 
 ## See Also
 
 ### Change Records
 
 - [CR006 - Query Feedback Loop](../crs/CR006-query-feedback-loop.md)
+- [CR011 - Revisable Core Purpose](../crs/CR011-revisable-core-purpose.md)
+- [CR014 - Query Non-Goal Wording](../crs/CR014-query-non-goal-wording.md)

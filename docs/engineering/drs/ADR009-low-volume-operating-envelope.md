@@ -4,7 +4,7 @@ Formalize as a first-class architectural constraint that Wiki targets a **low-vo
 
 ## Context
 
-The steward-attention model runs through the whole architecture: C002 - Scope Triage adjudicates each item, ADR004 - Merge Reconciliation Steering asks the steward to choose a reconciliation mode per overlapping merge, and C010 - Scaffold has the steward adjudicate each concept during a fork-and-migrate. ADR004 already leans on a volume assumption without naming it as a constraint — it accepts the two-step merge interaction as "acceptable under the current low-volume assumption" and notes that under high overlap volume the merge choice "would be the steward's main effort."
+The steward-attention model runs through the whole architecture: C002 - Scope Triage adjudicates each item, ADR004 - Merge Reconciliation Steering asks the steward to choose a reconciliation mode per overlapping merge, and C010 - Scaffold has the steward adjudicate each concept during a core-purpose-revision reconciliation (see [ADR011 - In-Place Core-Purpose Change](ADR011-in-place-core-purpose-change.md); originally a fork-and-migrate). ADR004 already leans on a volume assumption without naming it as a constraint — it accepts the two-step merge interaction as "acceptable under the current low-volume assumption" and notes that under high overlap volume the merge choice "would be the steward's main effort."
 
 At the same time the architecture is deliberately producer-agnostic and invites *automated* producers, including OKF's own reference agent, to deposit into the Inbox. Machine-volume automated production combined with one steward adjudicating every item and every merge by hand is a structural mismatch. The assumption is load-bearing, yet it lived only inside one ADR's cost discussion — so "automated producers welcome" and "the steward adjudicates everything" could drift into conflict unnoticed. The architecture must state the envelope it is designed for.
 
@@ -16,7 +16,7 @@ At the same time the architecture is deliberately producer-agnostic and invites 
 
 ## Decision
 
-Adopt the **low-volume single-steward operating envelope** as a stated architecture constraint. Per-item triage (C002), per-merge reconciliation (ADR004), and per-concept migration (C010) are all valid within this envelope; the steward's adjudication capacity is the system's backpressure, so a producer cannot force material into the corpus faster than the steward can judge it. If a producer's volume ever exceeds that capacity, it is out of the current envelope and calls for a future capability — for example batch triage with sampled review — which is flagged here, not built now. ADR004's "low-volume assumption" is anchored to this record.
+Adopt the **low-volume single-steward operating envelope** as a stated architecture constraint. Per-item triage (C002), per-merge reconciliation (ADR004), and per-concept reconciliation during a core-purpose revision (C010, ADR011) are all valid within this envelope; the steward's adjudication capacity is the system's backpressure, so a producer cannot force material into the corpus faster than the steward can judge it. If a producer's volume ever exceeds that capacity, it is out of the current envelope and calls for a future capability — for example batch triage with sampled review — which is flagged here, not built now. ADR004's "low-volume assumption" is anchored to this record.
 
 ## Consequences
 

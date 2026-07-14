@@ -30,7 +30,7 @@ An optional on-device markdown search engine is a scale affordance beyond the in
 - **C008 - Lifecycle & Retirement**: provides inbound-link resolution before a concept is deprecated or relocated.
 - **C009 - Coverage Review**: supplies the represented-concept directory and the dangling-link set as coverage signals.
 - **C002 - Scope Triage**: serves index and graph reads used to detect an incoming item's overlap with existing concepts.
-- **C010 - Scaffold**: traverses the graph during scope reconciliation and resolves inbound links during a migration.
+- **C010 - Scaffold**: traverses the graph during scope reconciliation and resolves inbound links before a drifted concept is retired during a core-purpose-revision reconciliation.
 
 ## Success criteria
 

@@ -1,6 +1,6 @@
 # C009 - Coverage Review
 
-Supports periodically reviewing which areas of knowledge are represented against what the team actually relies on, so gaps in coverage surface instead of persisting unnoticed.
+Supports periodically reviewing which areas of knowledge are represented against the reference's declared scope and other measurable coverage signals, so gaps surface for the steward — who supplies the judgment of what the team relies on (see [PDR003 - Reliance Is Steward-Supplied](../../product/drs/PDR003-reliance-steward-supplied.md)) — instead of persisting unnoticed.
 
 Coverage Review is a standing capability that compares what the reference *has* against what it is *expected* to have, and presents the difference for the steward's judgment. It creates nothing on its own; its output is a **sourcing agenda** — a prioritized list of thin or absent areas the steward acts on by going to *find sources* that then re-enter through Ingest. It runs as part of the **Survey** operation — the scaffold-relative assessment — alongside scope reconciliation (C010 - Scaffold), not as part of the corrective Lint hygiene pass (see [ADR010 - Curation Agent Skill and Operations](../drs/ADR010-curation-agent-skill.md)).
 
@@ -26,7 +26,7 @@ Coverage review compares the represented-concept directory (C005) against these 
 
 ## Success criteria
 
-- Coverage review surfaces areas the team relies on but that are absent from the reference (O002-R003), drawing on dangling-link, scaffold-scope, and agent-proposed signals, rather than leaving a gap to persist unnoticed.
+- Coverage review surfaces areas that are absent from the reference relative to its declared scope (O002-R003), drawing on dangling-link, scaffold-scope, and agent-proposed signals, and presents them for the steward's reliance judgment rather than leaving a gap to persist unnoticed.
 - The surfaced gaps are expressed as an actionable sourcing agenda — specific enough that a steward can go search for sources to fill each area — rather than an undifferentiated "something is missing" signal.
 
 ## See Also
@@ -38,3 +38,4 @@ Coverage review compares the represented-concept directory (C005) against these 
 ### Change Records
 
 - [CR008 - Delivery Form and Standing-Capability Specifications](../../crs/CR008-delivery-form-and-standing-capabilities.md)
+- [CR010 - Reliance Signal Reframe](../../crs/CR010-reliance-signal-reframe.md)

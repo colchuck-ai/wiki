@@ -42,6 +42,7 @@ No transition hard-deletes captured material. The only removal path is an explic
 ## Edge cases
 
 - **Explicit purge of sensitive material**: a producer deposits material that must not be retained (e.g. secrets, personal data). The steward may direct a deliberate purge, which replaces the file body with a tombstone note and adds `purged: <date>` and `purge-reason:` while leaving the frontmatter record intact. For a non-text captured asset, purge also removes the asset bytes, leaving only the tombstone record. Purge is a flag orthogonal to `status`, not a fourth state. This is the sole exception to retention and is never the default path.
+- **Purge of an already-integrated item's source**: purging the captured source of an item whose `status` is `integrated` removes an integrated concept's resolvable source and C006's revalidation baseline. C001 resolves the concept(s) it fed (via the `concept` backref) and hands them to C008 - Lifecycle & Retirement to mark **provenance-purged**, so the loss of source backing is visible rather than a silent, unverifiable claim (see [ADR013 - Provenance-Purge Cascade](../drs/ADR013-provenance-purge-cascade.md)). The concept's curated content is left in place for the steward to rewrite from another source or retire.
 - **Non-text source at capture**: the source is an image, PDF, or data file. It is captured as a version-controlled asset (see Data model) rather than forced into a text body, so its captured form is retained at full fidelity for provenance and revalidation.
 - **Re-deposit of already-integrated material**: the same source arriving again is captured as a new pending item; adjudication (C002) decides merge-versus-discard against what the corpus already holds.
 - **Origin unknown at capture**: the item is still captured with whatever origin metadata exists; a missing external reference is recorded as such rather than blocking intake, so nothing is lost before triage.
@@ -51,6 +52,7 @@ No transition hard-deletes captured material. The only removal path is an explic
 - **C002 - Scope Triage**: hands each pending item to triage for adjudication against the declared scope.
 - **C003 - Integration Authoring**: supplies the captured-source snapshot so an integrated statement can carry a source link that resolves to the material as captured, not only to a mutable external reference.
 - **C006 - Source Revalidation**: exposes the captured-source snapshot as the baseline against which the live external source is revalidated.
+- **C008 - Lifecycle & Retirement**: a purge of an already-integrated item's source cascades a provenance-purged mark to the concept(s) it fed.
 
 ## Success criteria
 
@@ -65,9 +67,11 @@ No transition hard-deletes captured material. The only removal path is an explic
 - [ADR002 - Retain captured source snapshots](../drs/ADR002-retain-captured-source-snapshots.md)
 - [ADR003 - Inbox storage layout](../drs/ADR003-inbox-storage-layout.md)
 - [ADR008 - Captured Source Assets](../drs/ADR008-captured-source-assets.md)
+- [ADR013 - Provenance-Purge Cascade](../drs/ADR013-provenance-purge-cascade.md)
 
 ### Change Records
 
 - [CR001 - Captured-source retention](../../crs/CR001-captured-source-retention.md)
 - [CR004 - Captured Source Assets](../../crs/CR004-captured-source-assets.md)
 - [CR006 - Query Feedback Loop](../../crs/CR006-query-feedback-loop.md)
+- [CR013 - Provenance-Purge Cascade](../../crs/CR013-provenance-purge-cascade.md)

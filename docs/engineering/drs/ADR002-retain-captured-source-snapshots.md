@@ -19,7 +19,7 @@ Adopt **full captured-snapshot retention**. On keep or merge, the Inbox freezes 
 ## Consequences
 
 - Enabling: closes the "source disappears" half of O001-RSK002 — provenance stays verifiable against the captured snapshot even when the external source is gone.
-- Enabling: gives O001-R002 revalidation a concrete baseline to diff against, and lets a curator see what actually changed, not merely that something did.
+- Enabling: gives O001-R002 revalidation a concrete baseline to compare against, and lets a curator see what actually changed, not merely that something did. *(Refined by [ADR012 - Coarse Source Revalidation](ADR012-coarse-source-revalidation.md): "what changed" is now surfaced by presenting the captured snapshot alongside the live source for the steward, rather than by a machine line-diff.)*
 - Enabling: reuses O005 portability — the snapshot store needs no bespoke persistence and travels with the bundle.
 - Cost: the captured-source store grows monotonically; if volume ever becomes a real burden it is a retirement-review concern (O006-R002) applied to the archive, not a reason to delete on integration.
 - Cost: sensitive material must be handled by an explicit purge path, adding a deliberate exception to the otherwise absolute retention guarantee.

@@ -1,5 +1,7 @@
 # ADR005 - Guided Fork-and-Migrate
 
+> **Superseded by [ADR011 - In-Place Core-Purpose Change](ADR011-in-place-core-purpose-change.md).** With the core purpose now revisable in place ([PDR004](../../product/drs/PDR004-revisable-core-purpose.md)), a pivot no longer forks a new bundle and migrates concepts across it; C010 applies the revision in place and initiates a Survey-driven reconciliation, avoiding the cross-bundle relationships a fork would require. This record is preserved for the decision trail.
+
 Realize the immutable-core-telos decision ([PDR001](../../product/drs/PDR001-immutable-core-telos.md)) as an active, tool-guided flow: C010 - Scaffold detects a scaffold edit that would change the core purpose, refuses to apply it in place, and drives a fork-a-new-reference-plus-per-concept-migration workflow — rather than leaving fork-and-migrate as a purely documented manual procedure.
 
 ## Context

@@ -11,13 +11,13 @@ The steward drives the system through a curation **Agent Skill** exposing four o
 - **Producer-agnostic intake.** The Inbox is the sole entry point and makes no assumption about who deposited an item, so automated producers, humans, and agents consuming the reference share one path and one adjudication gate.
 - **Provenance and recency travel with the concept.** A statement's originating source and its last-meaningful-change time are first-class in-corpus metadata on the concept, not external bookkeeping (and not VCS history), so a consumer can check both at the moment of reliance wherever the bundle travels.
 - **Never dead-end the graph.** Removal is modeled as deprecation with a replacement pointer, and any relocation or removal first resolves inbound links, so traversal never reaches nothing.
-- **The scaffold is the single scope authority.** Both per-item triage and periodic reconciliation adjudicate against the one declared scaffold, whose core purpose is fixed for the life of the reference.
+- **The scaffold is the single scope authority.** Both per-item triage and periodic reconciliation adjudicate against the one declared scaffold; its core purpose is revisable in place, and a revision triggers a Survey-driven reconciliation of the corpus against the new purpose (see [PDR004 - Revisable Core Purpose](../product/drs/PDR004-revisable-core-purpose.md), [ADR011 - In-Place Core-Purpose Change](drs/ADR011-in-place-core-purpose-change.md)).
 
 ## Constraints
 
 - The corpus must remain plain-text and version-control-native at all times; no component may introduce a **proprietary or tool-locked** store. Curated concepts are plain-text markdown; a non-text *originating source* may be retained as a version-controlled binary asset for provenance (see [PDR002 - Provenance Assets Exception](../product/drs/PDR002-provenance-assets-exception.md) and [ADR008 - Captured Source Assets](drs/ADR008-captured-source-assets.md)).
 - Wiki does not define or version the knowledge format. It consumes a published, versioned OKF; a format change is an OKF change, not a Wiki change.
-- The scaffold's core purpose is immutable for the life of the reference (see [PDR001 - Immutable Core Telos](../product/drs/PDR001-immutable-core-telos.md)). A genuine change of purpose is a new bundle plus a migration, not an in-place edit, so no component offers a "rewrite purpose" operation.
+- The scaffold's core purpose is revisable in place (see [PDR004 - Revisable Core Purpose](../product/drs/PDR004-revisable-core-purpose.md), superseding [PDR001 - Immutable Core Telos](../product/drs/PDR001-immutable-core-telos.md)). A change of purpose is applied in place and triggers a Survey-driven reconciliation of the corpus against the new purpose; version control preserves the prior whole-bundle state, so no fork and no cross-bundle relationships are needed.
 - Integration is never automatic. An item reaches the corpus only after the steward's keep or merge direction; out-of-scope or unadjudicated items wait for judgment.
 - Wiki targets a **low-volume, single-steward operating envelope**: every inbox item is triaged and every merge reconciled by hand, and the steward's adjudication capacity is the system's backpressure. Machine-volume unattended production is out of scope for the current design (see [ADR009 - Low-Volume Single-Steward Operating Envelope](drs/ADR009-low-volume-operating-envelope.md)).
 
@@ -73,12 +73,9 @@ See [C007 - Currency Tracking](components/C007-currency-tracking.md).
 
 ### C008 - Lifecycle & Retirement
 
-Marks a concept as deprecated or superseded — with a reason and, where one exists, a pointer to its replacement — rather than hard-deleting it, and supports periodically identifying concepts no longer relied upon as candidates for pruning.
+Marks a concept as deprecated or superseded — with a reason and, where one exists, a pointer to its replacement — rather than hard-deleting it, and supports periodically identifying retirement candidates from measurable signals, so obsolete knowledge is retired without dead-ending the graph.
 
-**Relationships**
-
-- **C003 - Integration Authoring**: deprecates a superseded statement, with a replacement pointer, when a merge reconciliation supersedes it.
-- **C005 - Index & Navigation**: consults inbound links before deprecating or relocating a concept.
+See [C008 - Lifecycle & Retirement](components/C008-lifecycle-and-retirement.md).
 
 ### C009 - Coverage Review
 
@@ -88,7 +85,7 @@ See [C009 - Coverage Review](components/C009-coverage-review.md).
 
 ### C010 - Scaffold
 
-Lets the steward declare the reference's purpose and scope as an optional, persistent anchor that endures for the life of the reference; detects a scaffold edit that would change the immutable core purpose and routes the steward to fork-and-migrate rather than applying it in place; and supports periodically reconciling the graph against the declared scope to surface drifted content.
+Lets the steward declare the reference's purpose and scope as an optional, persistent anchor that endures for the life of the reference; applies a core-purpose revision in place and initiates a Survey-driven reconciliation of the corpus against the new purpose; and supports periodically reconciling the graph against the declared scope to surface drifted content.
 
 See [C010 - Scaffold](components/C010-scaffold.md).
 
@@ -124,6 +121,7 @@ See [C010 - Scaffold](components/C010-scaffold.md).
 - [ADR007 - Conformance as Conventions and Validation](drs/ADR007-conformance-conventions-and-validation.md)
 - [ADR009 - Low-Volume Single-Steward Operating Envelope](drs/ADR009-low-volume-operating-envelope.md)
 - [ADR010 - Curation Agent Skill and Operations](drs/ADR010-curation-agent-skill.md)
+- [ADR011 - In-Place Core-Purpose Change](drs/ADR011-in-place-core-purpose-change.md)
 
 ### Change Records
 
@@ -132,3 +130,5 @@ See [C010 - Scaffold](components/C010-scaffold.md).
 - [CR005 - Conformance Boundary Re-scope](../crs/CR005-conformance-boundary-rescope.md)
 - [CR007 - Low-Volume Single-Steward Operating Envelope](../crs/CR007-low-volume-operating-envelope.md)
 - [CR008 - Delivery Form and Standing-Capability Specifications](../crs/CR008-delivery-form-and-standing-capabilities.md)
+- [CR009 - Lifecycle & Retirement Component](../crs/CR009-lifecycle-retirement-component.md)
+- [CR011 - Revisable Core Purpose](../crs/CR011-revisable-core-purpose.md)

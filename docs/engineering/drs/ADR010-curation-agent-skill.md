@@ -93,8 +93,10 @@ Agent-Skill prompt criteria anchored on the declared scaffold and co-evolved wit
 the steward, not as fixed algorithms.
 
 "Bundle" is the **OKF Knowledge Bundle** (SPEC §2/§3): a git repository
-(recommended), tarball, or subdirectory. Fork-and-migrate (ADR005) forks a new
-OKF bundle.
+(recommended), tarball, or subdirectory — the unit every operation reads and
+writes. (This originally gave fork-and-migrate a unit to fork; that mechanism is
+superseded by [ADR011 - In-Place Core-Purpose Change](ADR011-in-place-core-purpose-change.md),
+but the bundle definition stands unchanged.)
 
 ## Consequences
 
@@ -106,8 +108,9 @@ OKF bundle.
   agenda — so the differentiator is visible in the surface instead of buried as
   one bullet in a hygiene pass, and gap-driven sourcing becomes a named loop that
   feeds Ingest.
-- Enabling: "bundle" is concretely defined by the vendored spec, so C010/ADR005
-  fork-and-migrate has a definite unit to fork.
+- Enabling: "bundle" is concretely defined by the vendored spec, giving every
+  operation a definite unit to read and write (and, at the time, giving
+  C010/ADR005 fork-and-migrate a unit to fork — since superseded by ADR011).
 - Cost: the Agent Skill is the single delivery vehicle, so Wiki carries a
   Skill-runtime dependency.
 - Cost: classifier quality rests on prompt criteria plus the scaffold rather than

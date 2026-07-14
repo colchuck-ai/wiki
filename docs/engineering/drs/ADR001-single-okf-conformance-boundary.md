@@ -1,5 +1,7 @@
 # ADR001 - Single OKF Conformance Boundary
 
+> **Superseded by [ADR007 - Conformance as Conventions and Validation](ADR007-conformance-conventions-and-validation.md).** The single-owner-of-format-knowledge intent is kept, but the mandatory runtime gateway is replaced by authoring conventions (applied by the Agent Skill) plus a conformance validator, and C004 is renamed "OKF Conformance." This record is preserved for the decision trail.
+
 Route every corpus read and write through one component — the **C004 - OKF Conformance Adapter** — that owns all knowledge-format concerns, rather than letting each component encode OKF conventions for itself.
 
 ## Context

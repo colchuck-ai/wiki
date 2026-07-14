@@ -4,7 +4,7 @@ Turns a triaged item plus steward intent into corpus content: composes the conce
 
 ## Behavior
 
-Every write goes through C004 - OKF Conformance Adapter; this component reasons about concepts and links, never files. Every authored or updated concept records a change event through C007 - Currency Tracking, and its source link resolves to the captured-source snapshot the Inbox froze (C001), not only to a mutable external reference.
+This component authors concepts following the OKF conventions owned by C004 - OKF Conformance, and its writes are checked by C004's validator; it reasons about concepts and links, not the raw file format. Every authored or updated concept records a change event through C007 - Currency Tracking (which materializes the concept's `timestamp` and the scope's `log.md`), and its source link resolves to the captured-source snapshot the Inbox froze (C001), not only to a mutable external reference.
 
 **New concept (no overlap).** Compose the concept from the item body and steward intent, attach the source link, create contextual cross-links to related concepts with the reason for each stated, and register the concept and its links with C005 - Index & Navigation so it becomes discoverable.
 
@@ -26,7 +26,7 @@ No reconciliation path hard-deletes the prior statement.
 ## Relationships
 
 - **C002 - Scope Triage**: supplies the triaged item, the steward's keep or merge direction, and — for a merge — the set of existing concepts the item overlaps that the reconciliation acts against.
-- **C004 - OKF Conformance Adapter**: writes all content through the Adapter rather than to files directly.
+- **C004 - OKF Conformance**: authors following the OKF conventions C004 owns, with its writes checked by C004's validator, rather than routing content through a runtime adapter.
 - **C005 - Index & Navigation**: registers new concepts and their links, and resolves inbound links before a supersession relocates or deprecates a statement.
 - **C007 - Currency Tracking**: records the change event whenever a concept is authored or updated, including each reconciliation.
 - **C008 - Lifecycle & Retirement**: marks a superseded statement deprecated, with a reason and a replacement pointer, during a supersede reconciliation.
@@ -43,7 +43,9 @@ No reconciliation path hard-deletes the prior statement.
 ### Architectural Decision Records
 
 - [ADR004 - Merge Reconciliation Steering](../drs/ADR004-merge-reconciliation-steering.md)
+- [ADR007 - Conformance as Conventions and Validation](../drs/ADR007-conformance-conventions-and-validation.md)
 
 ### Change Records
 
 - [CR002 - Steward-Attention Interactions](../../crs/CR002-steward-attention-interactions.md)
+- [CR005 - Conformance Boundary Re-scope](../../crs/CR005-conformance-boundary-rescope.md)

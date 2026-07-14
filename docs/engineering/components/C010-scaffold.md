@@ -4,7 +4,7 @@ Lets the steward declare the reference's purpose and scope as an optional, persi
 
 ## Data model
 
-The scaffold is a plain-text, version-controlled artifact that travels with the bundle like the rest of the corpus (O005). It holds two parts with different mutability:
+The scaffold is a plain-text, version-controlled artifact that travels with the bundle like the rest of the corpus (O005) — realized as a first-class OKF concept (for example `scaffold.md` with `type: Scaffold`) at the bundle root, so it is linkable and reconcilable like any other concept and needs no store outside the corpus. A **bundle** is an OKF Knowledge Bundle (SPEC §2/§3): a directory tree of markdown distributed as a git repository, tarball, or subdirectory (see [ADR010 - Curation Agent Skill and Operations](../drs/ADR010-curation-agent-skill.md)). The scaffold holds two parts with different mutability:
 
 - **Core purpose** — the statement of what the reference is for. Fixed for the life of the reference (see [PDR001 - Immutable Core Telos](../../product/drs/PDR001-immutable-core-telos.md)).
 - **Periphery** — supporting boundaries and context. Revisable as understanding deepens.
@@ -23,7 +23,7 @@ The scaffold is optional. With none declared, there is no scope contract for tri
 2. Migrate still-in-scope concepts across one at a time, the steward adjudicating each, relying on O005 portability (plain-text, OKF-conformant, version-control-native concepts copy cleanly) — no bespoke migration machinery.
 3. Leave the original reference's core purpose and scope contract unchanged.
 
-**Scope reconciliation.** Periodically traverse the graph (via C005 - Index & Navigation) against the declared scope to surface content that has drifted out of scope, presenting it for the steward's judgment rather than acting automatically.
+**Scope reconciliation.** Periodically traverse the graph (via C005 - Index & Navigation) against the declared scope to surface content that has drifted out of scope, presenting it for the steward's judgment rather than acting automatically. This runs as part of the **Survey** operation — the scaffold-relative assessment — paired with coverage-gap review (C009 - Coverage Review): the two directions of measuring the corpus against its declared purpose (drifted-out vs. missing), distinct from the corrective Lint hygiene pass (see [ADR010 - Curation Agent Skill and Operations](../drs/ADR010-curation-agent-skill.md)).
 
 ## Edge cases
 
@@ -48,7 +48,9 @@ The scaffold is optional. With none declared, there is no scope contract for tri
 ### Architectural Decision Records
 
 - [ADR005 - Guided Fork-and-Migrate](../drs/ADR005-guided-fork-and-migrate.md)
+- [ADR010 - Curation Agent Skill and Operations](../drs/ADR010-curation-agent-skill.md)
 
 ### Change Records
 
 - [CR002 - Steward-Attention Interactions](../../crs/CR002-steward-attention-interactions.md)
+- [CR008 - Delivery Form and Standing-Capability Specifications](../../crs/CR008-delivery-form-and-standing-capabilities.md)

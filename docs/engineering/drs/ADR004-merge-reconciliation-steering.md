@@ -28,5 +28,5 @@ This localizes the only non-mechanical integration decision to a single explicit
 
 - Enabling: the tool never silently overwrites or contradicts standing knowledge — supersede honors O006-R001 (deprecation with a replacement pointer) and O003-R004 (inbound links resolved before relocation) by construction.
 - Enabling: keeps O007's low-effort promise intact on the common path (keep/discard) while spending the steward's attention only where an editorial decision genuinely exists.
-- Cost: a merge is a two-step interaction (surface → choose → author), not a one-word verdict; under high overlap volume this would be the steward's main effort. Acceptable under the current low-volume assumption.
+- Cost: a merge is a two-step interaction (surface → choose → author), not a one-word verdict; under high overlap volume this would be the steward's main effort. Acceptable under the current low-volume assumption, now a first-class constraint (see [ADR009 - Low-Volume Single-Steward Operating Envelope](ADR009-low-volume-operating-envelope.md)).
 - Cost: overlap detection in C002 must be good enough to surface the right target(s); a missed overlap silently falls back to authoring a near-duplicate — an O006 retirement-review concern, not a correctness failure.

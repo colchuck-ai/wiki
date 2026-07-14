@@ -2,13 +2,13 @@
 
 Wiki is hired by a **team or organization knowledge steward** to turn raw material into a trustworthy, navigable, portable shared reference that both teammates and agents can rely on. Where a Zettelkasten is a *personal* tool for **synthesizing** ideas into one's own thinking, Wiki is a *shared* discipline for **curating** what a group knows so others can consume it. It owns only the curation workflow — raw input → an inbox → integration into a knowledge corpus; the on-disk *format* is deferred entirely to the Open Knowledge Format specification (OKF).
 
-The steward works by **intent and judgment, never by hand**: they feed raw material into an inbox and direct what happens to it — keep, merge, deprecate, discard — while the tool performs all authoring, linking, and metadata and keeps the corpus OKF-conformant. Because the inbox is **producer-agnostic**, automated producers (including OKF's own reference agent) can deposit material for the steward to adjudicate; Wiki governs the integration, it does not monopolize production.
+The steward works by **intent and judgment, never by hand**: they feed raw material into an inbox and direct what happens to it — keep, merge, deprecate, discard — while the tool performs all authoring, linking, and metadata and keeps the corpus OKF-conformant. Because the inbox is **producer-agnostic**, automated producers (including OKF's own reference agent) can deposit material for the steward to adjudicate; so too can an agent or teammate *consuming* the reference, filing a synthesized answer back as a new deposit. Wiki governs the integration, it does not monopolize production.
 
 A reference that knows its purpose can declare it in an optional **scaffold** — normally up front, or retrofitted once a maturing reference discovers its boundary. The scaffold is a persistent anchor the steward articulates and the tool maintains for the life of the reference; it ranges from a single statement of intent to a fuller set of boundaries and context, and it keeps an otherwise emergent knowledge graph tethered to the end it serves. Its core purpose is fixed — redefining that purpose constitutes a new reference, to which existing knowledge may be migrated, rather than an edit.
 
-Wiki composes with a Zettelkasten rather than competing with it: **Wiki curates** the shared, cited source-of-record, and a Zettelkasten in the same project **consumes Wiki as source material and synthesizes** it into personal thinking notes — a *curate → synthesize* pipeline.
+Wiki composes with a Zettelkasten rather than competing with it: **Wiki curates** the shared, cited source-of-record, and a Zettelkasten in the same project **consumes Wiki as source material and synthesizes** it into personal thinking notes — a *curate → synthesize* pipeline. A synthesis produced while consuming the reference — by a teammate, a consuming agent, or that Zettelkasten — can itself be deposited back into the inbox as any other producer's material, so exploration compounds into the shared record rather than disappearing into a chat log.
 
-Non-goals: Wiki is not an unattended enrichment pipeline for a single source system (that is what OKF's reference agent demonstrates), not a personal thinking tool (that is the Zettelkasten), and not a definition of the storage format (that is OKF).
+Non-goals: Wiki is not an unattended enrichment pipeline for a single source system (that is what OKF's reference agent demonstrates), not a personal thinking tool (that is the Zettelkasten), and not a definition of the storage format (that is OKF). Nor does Wiki own a query surface: a consumer reads and queries the curated corpus with standard OKF tooling, and any answer worth keeping re-enters through the same producer-agnostic inbox rather than through a Wiki-specific query feature.
 
 ## Jobs
 
@@ -39,6 +39,7 @@ Maximize the proportion of statements in the reference that trace to a verifiabl
 **Change Records**
 
 - [CR001 - Captured-source retention](../crs/CR001-captured-source-retention.md)
+- [CR004 - Captured Source Assets](../crs/CR004-captured-source-assets.md)
 
 #### O002 - Complete coverage
 
@@ -115,7 +116,7 @@ Minimize the effort required to move or reuse the accumulated knowledge in a dif
 
 **Requirements**
 
-- **O005-R001** - Plain-text corpus: The product must store knowledge as plain, human-readable files that require no proprietary tool to read.
+- **O005-R001** - Plain-text corpus: The product must store curated knowledge as plain, human-readable files that require no proprietary tool to read. A non-text *originating source* may be retained in its captured binary form as a version-controlled asset for provenance — a bounded exception that preserves tool-neutrality rather than a proprietary store (see [PDR002 - Provenance Assets Exception](drs/PDR002-provenance-assets-exception.md)).
 - **O005-R002** - Open-format conformance: The product must keep the corpus conformant to a published, versioned open knowledge format so it is interpretable outside its origin.
 - **O005-R003** - Version-control native: The product must keep the corpus diffable and mergeable in standard version control.
 
@@ -123,6 +124,14 @@ Minimize the effort required to move or reuse the accumulated knowledge in a dif
 
 - **O005-RSK001 - Tool lock-in**: O005-R001 - Plain-text corpus, O005-R003 - Version-control native
 - **O005-RSK002 - Non-self-describing corpus**: O005-R002 - Open-format conformance
+
+**Product Decision Records**
+
+- [PDR002 - Provenance Assets Exception](drs/PDR002-provenance-assets-exception.md)
+
+**Change Records**
+
+- [CR004 - Captured Source Assets](../crs/CR004-captured-source-assets.md)
 
 #### O006 - High signal
 
@@ -185,3 +194,9 @@ Minimize the proportion of the reference that falls outside its intended purpose
 **Product Decision Records**
 
 - [PDR001 - Immutable Core Telos](drs/PDR001-immutable-core-telos.md)
+
+## See Also
+
+### Change Records
+
+- [CR006 - Query Feedback Loop](../crs/CR006-query-feedback-loop.md)

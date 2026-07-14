@@ -49,22 +49,28 @@ Minimize the lag between a change in an underlying source and the body of knowle
 
 #### O003 - Sustained signal
 
-Minimize the proportion of the knowledge a consumer encounters that is obsolete, superseded, or no longer relied upon.
+Minimize the proportion of the knowledge a consumer encounters that is low-signal — obsolete, superseded, redundant, insubstantial, or no longer relied upon.
 
 **Risks**
 
 - **O003-RSK001** - Accretion without removal: Knowledge is only ever added and never retired, so obsolete concepts accumulate and dilute what is still current.
 - **O003-RSK002** - Unmarked supersession: A concept is replaced but the superseded version is left unmarked, so consumers cannot tell it is stale and keep relying on it.
+- **O003-RSK003** - Redundant capture: The same knowledge enters more than once, so duplicate concepts accumulate and a consumer cannot tell which to rely on.
+- **O003-RSK004** - Low-value accretion: Trivial or insubstantial material is integrated, so the body of knowledge fills with noise that dilutes what is worth relying on.
 
 **Requirements**
 
 - **O003-R001** - Deprecation over deletion: The product must support marking a concept deprecated or superseded — with a reason and, where one exists, a pointer to its replacement — rather than only removing it.
 - **O003-R002** - Retirement review: The product must periodically surface retirement candidates from measurable signals — staleness, source drift, and supersession — for the steward's judgment of what is still relied upon.
+- **O003-R003** - Duplication check: The product must detect when incoming material overlaps an existing concept and surface the overlap for the steward to merge, keep as new, or discard, rather than admitting a blind duplicate.
+- **O003-R004** - Significance bar: The product must assess whether incoming material is substantial enough to keep and flag insubstantial material for the steward rather than integrating it automatically.
 
 **Risk-Requirement Map**
 
 - **O003-RSK001 - Accretion without removal**: O003-R001 - Deprecation over deletion, O003-R002 - Retirement review
 - **O003-RSK002 - Unmarked supersession**: O003-R001 - Deprecation over deletion
+- **O003-RSK003 - Redundant capture**: O003-R003 - Duplication check
+- **O003-RSK004 - Low-value accretion**: O003-R004 - Significance bar
 
 #### O004 - Low curation effort
 
@@ -119,12 +125,13 @@ Minimize the effort required to move or reuse the accumulated knowledge in a dif
 
 **Requirements**
 
-- **O006-R001** - Plain-text, version-controlled corpus: The product must store the body of knowledge as plain-text files, diffable and mergeable in standard version control and readable with no proprietary tool.
+- **O006-R001** - Plain-text corpus: The product must store the body of knowledge as plain-text files readable with no proprietary tool.
 - **O006-R002** - Open-format conformance: The product must keep the body of knowledge conformant to a published, versioned open knowledge format so it is interpretable outside its origin.
+- **O006-R003** - Version-control-native: The product must keep the body of knowledge diffable and mergeable in standard version control.
 
 **Risk-Requirement Map**
 
-- **O006-RSK001 - Tool lock-in**: O006-R001 - Plain-text, version-controlled corpus
+- **O006-RSK001 - Tool lock-in**: O006-R001 - Plain-text corpus, O006-R003 - Version-control-native
 - **O006-RSK002 - Non-self-describing corpus**: O006-R002 - Open-format conformance
 
 #### O007 - Complete coverage

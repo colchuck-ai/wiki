@@ -43,6 +43,8 @@ Turns a triaged item and the steward's direction into a concept — composing it
 
 The single owner of format knowledge: the OKF authoring conventions the tool applies and a validator that checks the corpus against the spec, so no other component and no contributor needs to know the format.
 
+See [C004 - OKF Conformance](components/C004-okf-conformance.md).
+
 ### C005 - Index & Navigation
 
 Maintains the navigable index of what the corpus contains, traverses the knowledge cross-link graph, and surfaces the inbound links to a concept before it is removed or relocated so nothing is left following a dangling reference.
@@ -92,3 +94,9 @@ Holds the steward's declaration of the corpus's purpose and scope as an optional
 - **O008-R001 - Charter declaration**: C010 - Charter
 - **O008-R002 - Scope-aware triage**: C002 - Triage
 - **O008-R003 - Scope reconciliation**: C010 - Charter
+
+## See Also
+
+### Architectural Decision Records
+
+- [ADR001 - Single OKF conformance boundary](drs/ADR001-single-okf-conformance-boundary.md)

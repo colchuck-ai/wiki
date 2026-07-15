@@ -55,6 +55,8 @@ See [C004 - OKF Conformance](components/C004-okf-conformance.md).
 
 Maintains the navigable index of what the corpus contains, traverses the knowledge cross-link graph, and surfaces the inbound links to a concept before it is removed or relocated so nothing is left following a dangling reference.
 
+See [C005 - Index & Navigation](components/C005-index-navigation.md).
+
 ### C006 - Source Revalidation
 
 Detects when a cited source has changed since a claim was drawn from it — comparing the live source against the durable reference or captured snapshot — and reports drift for the steward rather than repairing it.
@@ -112,3 +114,4 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR003 - Charter as an in-corpus concept and single scope authority](drs/ADR003-charter-as-in-corpus-concept.md)
 - [ADR004 - Triage disposition model](drs/ADR004-triage-disposition-model.md)
 - [ADR005 - Integration authoring, provenance, and merge model](drs/ADR005-integration-authoring-provenance-and-merge.md)
+- [ADR006 - Index materialization and on-demand graph computation](drs/ADR006-index-materialization-and-graph-computation.md)

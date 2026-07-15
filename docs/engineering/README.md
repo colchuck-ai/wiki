@@ -71,6 +71,8 @@ Surfaces areas within the intended scope that are thin or absent — from dangli
 
 Holds the steward's declaration of the corpus's purpose and scope as an optional, persistent anchor; applies a core-purpose revision in place; and periodically reconciles the corpus against the declared scope to surface content that has drifted out of it.
 
+See [C010 - Charter](components/C010-charter.md).
+
 ## Requirement-Component Map
 
 - **O001-R001 - Cited claims**: C003 - Integration Authoring
@@ -103,3 +105,4 @@ Holds the steward's declaration of the corpus's purpose and scope as an optional
 
 - [ADR001 - Single OKF conformance boundary](drs/ADR001-single-okf-conformance-boundary.md)
 - [ADR002 - Intake staging and durable-source capture](drs/ADR002-intake-staging-and-durable-source.md)
+- [ADR003 - Charter as an in-corpus concept and single scope authority](drs/ADR003-charter-as-in-corpus-concept.md)

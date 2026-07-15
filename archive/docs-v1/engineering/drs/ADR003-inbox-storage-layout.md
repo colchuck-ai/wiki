@@ -25,6 +25,6 @@ Keep the component named **"Inbox"** and name the directory **`raw/`**. A naming
 ## Consequences
 
 - Enabling: backlog count and age come straight from `pending` items sorted by `captured`, with no separate index to maintain.
-- Enabling: nothing moves, so each item's git history is its complete lifecycle, reinforcing change-history currency (O004) at no extra cost.
+- Enabling: nothing moves, so each item's git history is its complete lifecycle. *(The O004 change-history claim originally made here is superseded by [ADR006 - In-Corpus Currency](ADR006-in-corpus-currency.md): recency and history are materialized in-corpus as `timestamp`/`log.md`, because git history does not survive OKF's tarball/subdirectory distribution. The `raw/` git history remains a convenience for inspecting the inbox lifecycle, not the O004 system of record.)*
 - Enabling: the raw↔corpus distinction is expressed on disk (`raw/` vs. the corpus) without any change to the product spine's "inbox" vocabulary.
 - Cost: the `raw/` directory grows monotonically and backlog reads must filter by `status` rather than trust the directory contents; if volume ever bites, it is a retirement-review concern (O006-R002), not a reason to move files.

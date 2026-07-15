@@ -1,5 +1,7 @@
 # PDR001 - Immutable Core Telos
 
+> **Superseded by [PDR004 - Revisable Core Purpose](PDR004-revisable-core-purpose.md).** The core purpose is no longer fixed for the life of the reference: it may be revised in place, with the change reconciled through a Survey-driven pass rather than a fork to a new reference. Version control preserves the prior whole-bundle state. This record is preserved for the decision trail.
+
 A wiki's **core purpose is fixed for the life of the reference**. The scaffold that anchors on-scope focus (O008) may have its peripheral boundaries and context refined over time, but its core statement of purpose is not rewritten in place. A genuine change of purpose constitutes a *new* reference — into which still-relevant knowledge is migrated — not an edit to the existing one.
 
 ## Context

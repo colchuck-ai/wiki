@@ -1,24 +1,27 @@
-# ADR001 - Single OKF Conformance Boundary
+# ADR001 - Single OKF conformance boundary
 
-Route every corpus read and write through one component — the **C004 - OKF Conformance Adapter** — that owns all knowledge-format concerns, rather than letting each component encode OKF conventions for itself.
+Confine all knowledge of the OKF format — the authoring conventions the tool writes to and the validator that checks the corpus — to one component, C004 - OKF Conformance, so that no other component or contributor encodes the format and an OKF version change is absorbed at a single boundary.
 
 ## Context
 
-The product defers the on-disk format entirely to the Open Knowledge Format and lists "defining the storage format" as an explicit non-goal: Wiki owns the curation workflow, OKF owns the format. Several requirements are nonetheless format-bound — plain-text corpus (O005-R001), open-format conformance (O005-R002), version-control-native storage (O005-R003), consistent naming and stable identifiers (O003-R003), and applying the format's conventions automatically so no contributor need know them (O007-R002). Meanwhile many components — Integration Authoring, Index & Navigation, Currency Tracking, Lifecycle & Retirement — must read or write concepts to do their jobs. The architecture must decide where format knowledge lives.
+Wiki does not define or version the knowledge format; it consumes a published, versioned OKF (a product non-goal), pinned in-repo at `vendor/okf/SPEC.md` (OKF 0.1). Nearly every component reads or writes concepts — C001 through C010 all touch OKF files following its conventions — and the architecture requires them to do so directly on the git-tracked substrate, without shared mutable state.
+
+Two pressures follow. First, OKF is an external, evolving spec: its own §11 anticipates minor bumps (new optional fields, new conventional headings) and major bumps (renamed required fields, changed reserved filenames). Second, if each component embeds its own understanding of frontmatter fields, reserved filenames, link syntax, and index/log structure, that knowledge scatters across the system — a format change then ripples through every component, and conformance can drift component-by-component with nothing that authoritatively defines "conformant."
 
 ## Options
 
-- **Format knowledge in each component**: every component reads and writes files and applies OKF conventions itself. Simplest to start, but OKF's rules are duplicated across the system, an OKF version bump touches every component, and conformance can drift component-by-component — directly threatening O005-R002 and O007-R002.
-- **Single conformance boundary** *(chosen)*: one Adapter fronts the corpus; all other components exchange concepts through it and hold no format knowledge. Concentrates format coupling in one testable place at the cost of a mandatory indirection on every corpus access.
-- **Shared format library, direct file access**: components link a common OKF library but still read and write files directly. Removes duplication but not direct file access, so conformance and naming enforcement remain per-component and unenforceable at a boundary.
+- **Single conformance boundary (chosen)**: one component (C004) owns the authoring conventions and the validator; all other components produce and check OKF output through its helpers while doing their own reads and writes. Format knowledge lives in one place; the version pin lives in one place.
+- **Shared format library, no owning component**: expose serialization/parse helpers as a passive utility every component imports, but with no single component accountable for conformance or the validator. Removes duplication but diffuses ownership — there is no one place the "is the corpus conformant?" question resolves, and version pinning has no home element.
+- **Per-component OKF handling**: each component reads and writes OKF directly with its own inline understanding of the format. Simplest per component in isolation, but scatters format knowledge, invites drift between components, and turns every OKF bump into a system-wide edit.
 
 ## Decision
 
-Adopt the **single conformance boundary**. The OKF Conformance Adapter is the only component that touches the corpus as files; every other component reasons about concepts and links and goes through the Adapter. This makes "the format is deferred entirely to OKF" a structural fact rather than a convention: conformance, naming, and plain-text/version-control guarantees are enforced in one place, and an OKF version change is absorbed at the Adapter without rippling through the pipeline.
+Adopt the single conformance boundary. C004 - OKF Conformance is the sole owner of format knowledge, exposing authoring conventions (frontmatter serialization, slug/path derivation, index/log/citation/link formatting, deprecation marker) and a two-severity validator (OKF §9 errors plus a Wiki structural-profile advisory tier). Other components call these helpers and write concept files themselves, keeping the architecture's "no shared mutable state" while ensuring the format is defined once. C004 binds to exactly one pinned OKF version and is the boundary at which version changes are absorbed. This realizes the architecture's "one owner of format knowledge" principle as a concrete component contract.
 
 ## Consequences
 
-- Enabling: open-format conformance (O005-R002) and convention encapsulation (O007-R002) are enforced at a single chokepoint, so no component or contributor can bypass or drift from OKF.
-- Enabling: the format is genuinely swappable at its version boundary — an OKF revision is an Adapter change, keeping Wiki's non-goal of not defining the format intact.
-- Cost: every corpus access carries one layer of indirection, and the Adapter is a hot path that must not become a bottleneck.
-- Cost: the Adapter concentrates responsibility, so its interface must be expressive enough to serve authoring, indexing, currency, and lifecycle needs without leaking file-level detail back to callers.
+- Format knowledge is defined once; the "one-owner invariant" (no OKF structural literal appears outside C004) is a grep-able check enforcing this over time.
+- An OKF version change is localized: a minor bump adds tolerated fields/headings in C004; a major bump is a deliberate C004 change against the re-vendored pin, with no edit to any other component. The pin and re-vendoring procedure live in `vendor/okf/PROVENANCE.md`, which points here.
+- C004 becomes a shared dependency on effectively every concept read and write path; a defect in it affects all components, so its correctness and round-trip fidelity carry outsized weight (reflected in C004's success criteria).
+- C004's interface must be broad enough to cover every consumer's authoring need (C003, C005, C007, C008), creating pressure toward a wide helper surface that must be kept cohesive rather than becoming a catch-all.
+- Contributors and agents need not learn OKF to add conformant knowledge, directly serving convention encapsulation (O004-R002).

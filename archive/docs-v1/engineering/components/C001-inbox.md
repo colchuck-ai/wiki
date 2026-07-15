@@ -4,7 +4,7 @@ The single, producer-agnostic capture point where raw material is recorded — w
 
 The Inbox is the only entry point into Wiki. It records what arrived, from whom, and when, and it never destroys captured material as a side effect of processing: an item leaves the active backlog by changing state, not by being deleted.
 
-The Inbox is a Wiki-owned store that sits outside the OKF conformance boundary (raw material is not conformant knowledge yet), so its layout is Wiki's to define — it does not pass through C004 - OKF Conformance Adapter.
+The Inbox is a Wiki-owned store that sits outside the OKF conformance boundary (raw material is not conformant knowledge yet), so its layout is Wiki's to define — it is not governed by the OKF conventions C004 - OKF Conformance owns.
 
 ## Data model
 
@@ -25,14 +25,15 @@ status:   pending                       # pending | integrated | discarded
 - **Inbox item**: the raw captured material (body) plus capture metadata (`origin`, `source`, `captured`).
 - **State** (`status`): `pending`, `integrated`, or `discarded`. Only `pending` items count toward the backlog; a transition is a frontmatter edit, never a file move.
 - **Captured-source snapshot**: once `status: integrated`, the file's body is frozen and the file itself *is* the immutable snapshot — the artifact an integrated statement's source link resolves to (`raw/<id>.md`) and the baseline C006 - Source Revalidation diffs the live external source against. The file does double duty: intake record and durable provenance.
+- **Non-text captured source**: when the originating source is inherently non-text (an image, a PDF, a data file), its captured form is retained as a version-controlled binary **asset** (for example under `raw/assets/`) colocated with the item and referenced from it; that asset is the immutable captured-source snapshot in place of a text body. Curated concepts stay plain-text; only retained source provenance may be binary (see [PDR002 - Provenance Assets Exception](../../product/drs/PDR002-provenance-assets-exception.md) and [ADR008 - Captured Source Assets](../drs/ADR008-captured-source-assets.md)).
 
-Invariant: the `raw/` directory is append-and-annotate only. A file's git history is therefore the item's full lifecycle, which also feeds change-history currency (O004).
+Invariant: the `raw/` directory is append-and-annotate only, so a file's git history is a convenient record of the item's inbox lifecycle. It is not the O004 change-history system of record, though: recency and change history are materialized in-corpus as `timestamp`/`log.md` by C007 - Currency Tracking, because git history does not survive OKF's tarball/subdirectory distribution (see [ADR006 - In-Corpus Currency](../drs/ADR006-in-corpus-currency.md)).
 
 ## Behavior
 
 An item settles into exactly one terminal `status` and never re-enters the backlog. Every transition is a frontmatter edit in place; the file does not move:
 
-- **Captured → `pending`.** Any producer — human or automated — deposits raw material; the Inbox writes a new file under `raw/` with its `origin`, `source`, and `captured` date, `status: pending`. It now counts toward the backlog.
+- **Captured → `pending`.** Any producer — a human, an automated producer, or an agent consuming the reference that files a synthesized answer back — deposits raw material; the Inbox writes a new file under `raw/` with its `origin`, `source`, and `captured` date, `status: pending`. It now counts toward the backlog.
 - **`pending` → `integrated`** (steward directs keep or merge). `status` flips to `integrated`; `integrated: <date>` and `concept: <okf-id>` (a backref to the concept it fed) are added. The body is now frozen and serves as the captured-source snapshot. Retained, not deleted, so provenance survives even if the external source later changes or disappears.
 - **`pending` → `discarded`** (steward directs discard). `status` flips to `discarded`; `discarded: <date>` and `reason:` are added. The body is retained as a tombstone. Discard records a judgment; it does not erase what was considered.
 
@@ -40,7 +41,9 @@ No transition hard-deletes captured material. The only removal path is an explic
 
 ## Edge cases
 
-- **Explicit purge of sensitive material**: a producer deposits material that must not be retained (e.g. secrets, personal data). The steward may direct a deliberate purge, which replaces the file body with a tombstone note and adds `purged: <date>` and `purge-reason:` while leaving the frontmatter record intact. Purge is a flag orthogonal to `status`, not a fourth state. This is the sole exception to retention and is never the default path.
+- **Explicit purge of sensitive material**: a producer deposits material that must not be retained (e.g. secrets, personal data). The steward may direct a deliberate purge, which replaces the file body with a tombstone note and adds `purged: <date>` and `purge-reason:` while leaving the frontmatter record intact. For a non-text captured asset, purge also removes the asset bytes, leaving only the tombstone record. Purge is a flag orthogonal to `status`, not a fourth state. This is the sole exception to retention and is never the default path.
+- **Purge of an already-integrated item's source**: purging the captured source of an item whose `status` is `integrated` removes an integrated concept's resolvable source and C006's revalidation baseline. C001 resolves the concept(s) it fed (via the `concept` backref) and hands them to C008 - Lifecycle & Retirement to mark **provenance-purged**, so the loss of source backing is visible rather than a silent, unverifiable claim (see [ADR013 - Provenance-Purge Cascade](../drs/ADR013-provenance-purge-cascade.md)). The concept's curated content is left in place for the steward to rewrite from another source or retire.
+- **Non-text source at capture**: the source is an image, PDF, or data file. It is captured as a version-controlled asset (see Data model) rather than forced into a text body, so its captured form is retained at full fidelity for provenance and revalidation.
 - **Re-deposit of already-integrated material**: the same source arriving again is captured as a new pending item; adjudication (C002) decides merge-versus-discard against what the corpus already holds.
 - **Origin unknown at capture**: the item is still captured with whatever origin metadata exists; a missing external reference is recorded as such rather than blocking intake, so nothing is lost before triage.
 
@@ -49,6 +52,7 @@ No transition hard-deletes captured material. The only removal path is an explic
 - **C002 - Scope Triage**: hands each pending item to triage for adjudication against the declared scope.
 - **C003 - Integration Authoring**: supplies the captured-source snapshot so an integrated statement can carry a source link that resolves to the material as captured, not only to a mutable external reference.
 - **C006 - Source Revalidation**: exposes the captured-source snapshot as the baseline against which the live external source is revalidated.
+- **C008 - Lifecycle & Retirement**: a purge of an already-integrated item's source cascades a provenance-purged mark to the concept(s) it fed.
 
 ## Success criteria
 
@@ -62,7 +66,12 @@ No transition hard-deletes captured material. The only removal path is an explic
 
 - [ADR002 - Retain captured source snapshots](../drs/ADR002-retain-captured-source-snapshots.md)
 - [ADR003 - Inbox storage layout](../drs/ADR003-inbox-storage-layout.md)
+- [ADR008 - Captured Source Assets](../drs/ADR008-captured-source-assets.md)
+- [ADR013 - Provenance-Purge Cascade](../drs/ADR013-provenance-purge-cascade.md)
 
 ### Change Records
 
 - [CR001 - Captured-source retention](../../crs/CR001-captured-source-retention.md)
+- [CR004 - Captured Source Assets](../../crs/CR004-captured-source-assets.md)
+- [CR006 - Query Feedback Loop](../../crs/CR006-query-feedback-loop.md)
+- [CR013 - Provenance-Purge Cascade](../../crs/CR013-provenance-purge-cascade.md)

@@ -61,6 +61,8 @@ See [C005 - Index & Navigation](components/C005-index-navigation.md).
 
 Detects when a cited source has changed since a claim was drawn from it — comparing the live source against the durable reference or captured snapshot — and reports drift for the steward rather than repairing it.
 
+See [C006 - Source Revalidation](components/C006-source-revalidation.md).
+
 ### C007 - Currency Tracking
 
 Records when each concept last meaningfully changed and maintains a dated change history for each part of the corpus, materialized as in-corpus artifacts so recency and history travel with the bundle.
@@ -115,3 +117,4 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR004 - Triage disposition model](drs/ADR004-triage-disposition-model.md)
 - [ADR005 - Integration authoring, provenance, and merge model](drs/ADR005-integration-authoring-provenance-and-merge.md)
 - [ADR006 - Index materialization and on-demand graph computation](drs/ADR006-index-materialization-and-graph-computation.md)
+- [ADR007 - Citation link form for drift revalidation](drs/ADR007-citation-link-form-for-drift-revalidation.md)

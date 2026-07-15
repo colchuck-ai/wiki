@@ -79,3 +79,4 @@ C001 exposes an in-process face for submission and backlog access. All corpus si
 ### Architectural Decision Records
 
 - [ADR002 - Intake staging and durable-source capture](../drs/ADR002-intake-staging-and-durable-source.md)
+- [ADR004 - Triage disposition model](../drs/ADR004-triage-disposition-model.md)

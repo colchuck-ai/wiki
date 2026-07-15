@@ -43,6 +43,8 @@ See [C002 - Triage](components/C002-triage.md).
 
 Turns a triaged item and the steward's direction into a concept — composing it, attaching its source citation, and cross-linking related concepts with the reason for each stated — and executes the steward-chosen reconciliation when the item merges with an existing concept.
 
+See [C003 - Integration Authoring](components/C003-integration-authoring.md).
+
 ### C004 - OKF Conformance
 
 The single owner of format knowledge: the OKF authoring conventions the tool applies and a validator that checks the corpus against the spec, so no other component and no contributor needs to know the format.
@@ -109,3 +111,4 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR002 - Intake staging and durable-source capture](drs/ADR002-intake-staging-and-durable-source.md)
 - [ADR003 - Charter as an in-corpus concept and single scope authority](drs/ADR003-charter-as-in-corpus-concept.md)
 - [ADR004 - Triage disposition model](drs/ADR004-triage-disposition-model.md)
+- [ADR005 - Integration authoring, provenance, and merge model](drs/ADR005-integration-authoring-provenance-and-merge.md)

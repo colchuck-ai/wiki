@@ -80,3 +80,4 @@ C001 exposes an in-process face for submission and backlog access. All corpus si
 
 - [ADR002 - Intake staging and durable-source capture](../drs/ADR002-intake-staging-and-durable-source.md)
 - [ADR004 - Triage disposition model](../drs/ADR004-triage-disposition-model.md)
+- [ADR005 - Integration authoring, provenance, and merge model](../drs/ADR005-integration-authoring-provenance-and-merge.md)

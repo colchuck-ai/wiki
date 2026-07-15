@@ -67,6 +67,8 @@ See [C006 - Source Revalidation](components/C006-source-revalidation.md).
 
 Records when each concept last meaningfully changed and maintains a dated change history for each part of the corpus, materialized as in-corpus artifacts so recency and history travel with the bundle.
 
+See [C007 - Currency Tracking](components/C007-currency-tracking.md).
+
 ### C008 - Lifecycle & Retirement
 
 Marks a concept deprecated or superseded — with a reason and, where one exists, a replacement pointer — rather than deleting it, and surfaces retirement candidates from measurable signals (staleness, source drift, supersession) for the steward's judgment.
@@ -118,3 +120,4 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR005 - Integration authoring, provenance, and merge model](drs/ADR005-integration-authoring-provenance-and-merge.md)
 - [ADR006 - Index materialization and on-demand graph computation](drs/ADR006-index-materialization-and-graph-computation.md)
 - [ADR007 - Citation link form for drift revalidation](drs/ADR007-citation-link-form-for-drift-revalidation.md)
+- [ADR008 - Recency materialization and per-directory log scoping](drs/ADR008-recency-materialization-and-log-scoping.md)

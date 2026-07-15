@@ -31,6 +31,8 @@ Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by
 
 The single producer-agnostic intake point: records each ingestion task with a reference to the material to distill, ensures that source is durably held — referenced in place when it is version-controlled alongside the corpus, or captured as a snapshot when it is not — and exposes the backlog of un-triaged items.
 
+See [C001 - Ingestion Queue](components/C001-ingestion-queue.md).
+
 ### C002 - Triage
 
 Adjudicates each queued item before it enters the corpus, weighing it against several admission criteria — the charter's declared scope, overlap with existing concepts, and whether it is substantial enough to keep — and capturing the steward's disposition, flagging anything that fails a criterion for judgment rather than admitting it automatically. When an item overlaps existing concepts, it surfaces them so a merge can be steered against a concrete target.
@@ -100,3 +102,4 @@ Holds the steward's declaration of the corpus's purpose and scope as an optional
 ### Architectural Decision Records
 
 - [ADR001 - Single OKF conformance boundary](drs/ADR001-single-okf-conformance-boundary.md)
+- [ADR002 - Intake staging and durable-source capture](drs/ADR002-intake-staging-and-durable-source.md)

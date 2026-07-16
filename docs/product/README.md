@@ -1,6 +1,6 @@
 # Wiki — a curation tool for shared knowledge
 
-Wiki is hired by a **knowledge steward** to turn the raw material a team accumulates into a shared body of knowledge any teammate or agent can find and rely on — without routing every question through the one person who holds it in their head. Success is knowledge that stays trustworthy as it grows: traceable to its source, current, complete for what it is meant to cover, and portable enough to outlive any one tool.
+Wiki is hired by a **knowledge steward** to turn the raw material a team accumulates into a shared body of knowledge any teammate or agent can find and rely on — without routing every question through the one person who holds it in their head. Success is knowledge that stays trustworthy as it grows: traceable to its source, faithful to what that source says, current, complete for what it is meant to cover, and portable enough to outlive any one tool.
 
 ## Jobs
 
@@ -172,3 +172,33 @@ Minimize the proportion of the body of knowledge that falls outside its intended
 
 - **O008-RSK001 - Input-driven drift**: O008-R002 - Scope-aware triage, O008-R003 - Scope reconciliation
 - **O008-RSK002 - Implicit boundary**: O008-R001 - Charter declaration
+
+#### O009 - Faithful representation
+
+Maximize the proportion of claims in the body of knowledge a consumer can rely on as faithful to what their cited source supports.
+
+**Risks**
+
+- **O009-RSK001** - Distortion in distillation: When raw material is refined into a concept, the authored claim overstates, generalizes beyond, or otherwise drifts from what the source actually supports, so a consumer relies on a claim its own cited source would not back.
+- **O009-RSK002** - Indistinguishable grounding: A claim faithful to its source and one that outruns it read identically in the body of knowledge, so a consumer cannot tell which claims the source actually backs and is driven to re-check each against its source.
+
+**Requirements**
+
+- **O009-R001** - Source-grounded authoring: The product must check each authored claim against the content of its cited source and flag claims the source does not support for the steward, rather than admitting them silently.
+- **O009-R002** - Legible grounding: The product must surface, with each claim, a signal of how well it is grounded in its cited source, so a consumer can tell a source-backed claim from one that needs checking.
+- **O009-R003** - Distillation review: The product must present each authored claim alongside the span of the source it was drawn from, so the steward can confirm the claim represents the source before it is integrated.
+
+**Risk-Requirement Map**
+
+- **O009-RSK001 - Distortion in distillation**: O009-R001 - Source-grounded authoring, O009-R003 - Distillation review
+- **O009-RSK002 - Indistinguishable grounding**: O009-R002 - Legible grounding
+
+**Product Decision Records**
+
+- [PDR001 - Claim fidelity as a first-class outcome](drs/PDR001-claim-fidelity-outcome.md)
+
+## See Also
+
+### Product Decision Records
+
+- [PDR001 - Claim fidelity as a first-class outcome](drs/PDR001-claim-fidelity-outcome.md)

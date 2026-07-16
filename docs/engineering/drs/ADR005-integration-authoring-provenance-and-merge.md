@@ -2,6 +2,8 @@
 
 Author each admitted item into the corpus through C004's write face, and settle the three questions C003 - Integration Authoring inherited: land a durable source as a **cited-by-path provenance asset** under `/references/` (not as a concept); satisfy per-claim provenance **concept-level by default, inline per-claim only on multi-source merges**; and execute a merge by **folding into the target concept in place, preserving its id and history**. Discover cross-link candidates with C003's own scan through C004, with no C005 dependency.
 
+> **Superseded in part by [ADR011](ADR011-concept-verb-surface.md):** the `author` entry point with a `keep-new`/`merge` mode is replaced by the `create` and `revise` verbs (and the `merge` composition built from `revise` + `delete`). The provenance (cite-by-path), citation-granularity, and merge-reconciliation decisions recorded below are retained unchanged and are now realized by those verbs.
+
 ## Context
 
 C003 - Integration Authoring is the pipeline's write stage between triage (C002 - Triage) and the standing corpus, and the only component that writes concepts. It fulfills cited claims (O001-R001) and intent-driven authoring (O004-R001), and shares reasoned cross-links (O005-R002) with C005 - Index & Navigation. [ADR002](ADR002-intake-staging-and-durable-source.md) explicitly deferred the corpus-side provenance layout "to be settled with C003," and C001's promotion boundary left the physical snapshot move to authoring.

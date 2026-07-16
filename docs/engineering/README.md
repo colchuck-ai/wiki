@@ -9,7 +9,8 @@ Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by
 - **Producer-agnostic intake.** One entry point makes no assumption about who submitted an item, so people, tools, and agents share one path and one adjudication gate.
 - **Cite by durable reference.** A concept cites its source by reference; the reference resolves to something version-controlled alongside the corpus, and a snapshot is captured only as a fallback when the source cannot be referenced durably in place. Provenance travels with the concept.
 - **Two kinds of link.** Knowledge cross-links between concepts form the navigable graph and stay within the corpus; provenance references from a concept to its source are a separate class that may point outward.
-- **Never dead-end the graph.** Retiring or relocating a concept always repairs every inbound link that action would otherwise orphan — retargeted to the new path on relocation, unlinked to plain text on retirement — so traversal never reaches nothing. Deprecating a concept in place needs no repair, since its file simply stays put.
+- **Never dead-end the graph — repair to the successor.** Deleting, moving, or merging away a concept always repairs every inbound link that action would otherwise orphan, pointing each at the departing concept's successor: retargeted to the new path on a `move`, redirected to the replacement or merge target on a `delete`-with-replacement or `merge`, or unlinked to plain text on a `delete` with no successor — so traversal never reaches nothing (see [ADR012](drs/ADR012-repair-to-successor-link-model.md)). Deprecating a concept in place needs no repair, since its file simply stays put.
+- **Write verbs carry their own effects.** Each concept write — `create`, `revise`, `move`, `delete`, `deprecate` — records its own recency and change history (C007) and regenerates the affected index (C005) as part of the verb, so no caller orchestrates those steps and they cannot drift out of step with content (see [ADR011](drs/ADR011-concept-verb-surface.md)).
 - **The charter is the single scope authority.** Both per-item triage and periodic reconciliation adjudicate against the one declared charter; its core purpose is revisable in place.
 
 ## Constraints
@@ -23,7 +24,18 @@ Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by
 
 - **Git-tracked plain-text files** as the corpus substrate: directly satisfies O006-R003 (version-control-native) — the corpus is diffable and mergeable with no bespoke persistence layer — and holds the plain-text files C004 keeps conformant.
 - **The Open Knowledge Format (OKF)** as the storage and structural spec: the format is a product non-goal for Wiki to define, so the architecture depends on OKF rather than inventing one. The version Wiki builds against is pinned in-repo at [`vendor/okf/SPEC.md`](../../vendor/okf/SPEC.md) (OKF 0.1); C004 - OKF Conformance is the only component that reads it.
-- **Delivery as a curation Agent Skill** exposing intent-shaped operations: the steward works by intent while the agent performs the authoring, linking, metadata, and upkeep. The operations realize the product's workflows — building and integrating material (Ingest), and keeping the corpus healthy by surfacing what is inaccurate, drifted, or missing (Survey and Lint). Querying the corpus is a consumption convenience, not a curation operation.
+- **Delivery as a curation Agent Skill** exposing intent-shaped operations: the steward works by intent while the agent performs the authoring, linking, metadata, and upkeep. The operations realize the product's workflows — building and integrating material (Ingest), and keeping the corpus healthy by surfacing what is inaccurate, drifted, or missing (Survey and Lint). Concretely, the skill exposes a small concept **write**-verb surface organized by the steward's intent ([ADR011](drs/ADR011-concept-verb-surface.md)): `create`, `revise`, `move`, `delete`, and `deprecate`, with `merge` as a `revise`+`delete` composition. The source of material — an admitted task, another concept, or the steward's direction — is a parameter of `create`/`revise`, not a separate verb; materialization is a verb effect, not a caller step. Reads are not curation verbs: the Query operation reads the plain-text concepts and the materialized index directly, and the reads that compute (`history`, `inbound_links`, `dangling_links`, `graph`) live on their components — querying the corpus is a consumption convenience, not a curation operation.
+
+## Operations
+
+The curation Agent Skill exposes four steward-facing operations over the components below. Only **Ingest** and the remediation verbs write; **Survey** and **Lint** mutate nothing — they surface findings for the steward, who then directs a write verb to act (recommend-and-confirm; intent in, work out). **Query** is read-only consumption. The write verbs — `create`, `revise`, `move`, `delete`, `deprecate`, and the `merge` composition — live on C003 and C008, and each carries its own recency, history, index, and link-repair effects ([ADR011](drs/ADR011-concept-verb-surface.md)).
+
+- **Ingest** — build and integrate new material. C001 - Ingestion Queue records and durably holds a submission; C002 - Triage recommends a disposition and records the steward's decision; on admission C003 - Integration Authoring `create`s a new concept or `revise`s an existing one (and `merge`s two existing concepts when the steward is consolidating duplicates).
+- **Survey** — keep the corpus true, current, on-scope, and complete *over time* (substance and currency, needing the steward's judgment). A read-only aggregation of the components' detect faces: source drift (`C006.revalidate_all`), staleness and recent change (`C007.recency` / `history_all`), retirement candidates from staleness + drift + supersession (`C008.retirement_candidates`), scope drift (`C010.reconcile`), and coverage gaps (C009 - Coverage Review). Each finding routes to a write verb the steward directs — drift → `revise`; retirement candidate or out-of-scope → `delete` / `deprecate` / `move`; gap → `create` — none of which Survey performs itself.
+- **Lint** — check that the corpus is well-formed and internally consistent *right now* (form and consistency, mechanical and mostly objective). OKF structural conformance (`C004.validate`), referential integrity (`C005.dangling_links`), and index/recency freshness (`C005.reindex` idempotence, `C007.recency`). A finding is resolved by a `revise` or a mechanical re-render. Because materialization is a verb effect, index and recency can no longer drift from a forgotten call ([ADR011](drs/ADR011-concept-verb-surface.md)) — Lint's freshness check narrows to concepts authored before the tooling or hand-edited outside the verbs.
+- **Query** — consume the corpus. Reading a concept or the index is direct file access (the plain-text concepts and the materialized `index.md`); the reads that compute — `C005.graph` / `inbound_links`, `C007.history` — are available for traversal. Query performs no curation write and needs no dedicated verb.
+
+Survey and Lint have no owning component: each is a skill-level aggregation of the detect faces named above, distinct from Ingest, which runs the C001 → C002 → C003 pipeline. The dividing line between them is *substance over time* (Survey) versus *form right now* (Lint).
 
 ## Components
 
@@ -41,7 +53,7 @@ See [C002 - Triage](components/C002-triage.md).
 
 ### C003 - Integration Authoring
 
-Turns a triaged item and the steward's direction into a concept — composing it, attaching its source citation, and cross-linking related concepts with the reason for each stated — and executes the steward-chosen reconciliation when the item merges with an existing concept.
+Authors concept content through two write verbs — `create` (a new concept from an admitted task) and `revise` (an existing concept in place, from a task, another concept, or the steward's direction) — composing prose, source citations, and reasoned cross-links, and provides the `merge` composition (`revise` + `delete`) that combines two existing concepts.
 
 See [C003 - Integration Authoring](components/C003-integration-authoring.md).
 
@@ -53,7 +65,7 @@ See [C004 - OKF Conformance](components/C004-okf-conformance.md).
 
 ### C005 - Index & Navigation
 
-Maintains the navigable index of what the corpus contains, traverses the knowledge cross-link graph, and surfaces the inbound links to a concept before it is retired or relocated so C008 can repair them and nothing is left following a dangling reference.
+Maintains the navigable index of what the corpus contains, traverses the knowledge cross-link graph, and surfaces the inbound links to a concept before it is deleted, moved, or merged away so C008 can repair them and nothing is left following a dangling reference.
 
 See [C005 - Index & Navigation](components/C005-index-navigation.md).
 
@@ -71,7 +83,7 @@ See [C007 - Currency Tracking](components/C007-currency-tracking.md).
 
 ### C008 - Lifecycle & Retirement
 
-Retires a concept — by deleting it outright (auto-repairing every inbound link) or by marking it deprecated or superseded in place with a reason and, where one exists, a replacement pointer — relocates a concept to a new path with its inbound links retargeted automatically, and surfaces retirement candidates from measurable signals (staleness, source drift, supersession) for the steward's judgment.
+Removes or relocates a concept already in the corpus — `delete` removes it outright, `deprecate` marks it in place with a reason and, where one exists, a replacement pointer, and `move` relocates it to a new path — repairing every inbound link the action orphans by the repair-to-successor rule, and surfaces retirement candidates from measurable signals (staleness, source drift, supersession) for the steward's judgment.
 
 See [C008 - Lifecycle & Retirement](components/C008-lifecycle-retirement.md).
 
@@ -124,3 +136,10 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR007 - Citation link form for drift revalidation](drs/ADR007-citation-link-form-for-drift-revalidation.md)
 - [ADR008 - Recency materialization and per-directory log scoping](drs/ADR008-recency-materialization-and-log-scoping.md)
 - [ADR009 - Retirement, relocation, and link-repair model](drs/ADR009-retirement-relocation-and-link-repair-model.md)
+- [ADR010 - Citation pruning on merge reconciliation](drs/ADR010-citation-pruning-on-merge.md)
+- [ADR011 - Concept verb surface](drs/ADR011-concept-verb-surface.md)
+- [ADR012 - Repair-to-successor link model](drs/ADR012-repair-to-successor-link-model.md)
+
+### Change Records
+
+- [CR003 - Concept verb surface: create, revise, merge](../crs/CR003-concept-verb-surface.md)

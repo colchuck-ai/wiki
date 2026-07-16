@@ -72,7 +72,18 @@ All problems below are semantic. `⚑` = independently raised by two lenses (hig
   merge = one git commit or none.
 - **Type:** update → CR + likely an ADR amendment. Good `/codebase-design` candidate.
 
-### [ ] T1.3 — [Traceability · ⚑] O004-R003 map row broken; CR003 never propagated
+### [x] T1.3 — [Traceability · ⚑] O004-R003 map row broken; CR003 never propagated
+- **Done (2026-07-16, uncommitted):** Chose *reciprocate*, not *narrow* — O004-R003 is a two-part
+  requirement ("surface … *and* carry out … no hand-auditing *or* hand-editing"), so the true
+  satisfying set spans both halves: the five detect/lifecycle components (surface) **plus C003**
+  (carry-out). Added C003 to the map row (`docs/engineering/README.md`); made every mapped
+  component claim O004-R003 in its own intro — C003 as the remediation half, C006/C007/C009/C010
+  as detect faces, C008 on both sides. Replaced C009's fragile sibling enumeration ("with C006,
+  C007, C008, and C010" — the exact list that had rotted) with one uniform role-based phrase
+  ("the corpus's other detect faces and C003's remediation verbs"), curing the class of defect,
+  not just the instance. Authored `CR006-assisted-upkeep-traceability.md`; added CR006 backlinks
+  to all six components + README (created Change Records sections for C009/C010). Linter clean
+  (33 files, 0/0); binary checklist passed. Tier 1 now complete.
 - **Problem:** Requirement-Component Map maps O004-R003 to {C006,C007,C008,C009,C010},
   but four of those five never claim O004-R003, and **C003 is absent** — even though CR003
   made C003.`revise`-from-steward-direction *the* assisted-upkeep interface. A recorded

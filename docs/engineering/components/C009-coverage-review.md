@@ -2,7 +2,7 @@
 
 Surfaces areas within the intended scope that are thin or absent — from dangling links, the charter's declared scope, and an agent scan of the corpus — as a sourcing agenda for the steward, so gaps do not persist unnoticed.
 
-C009 is a **detect-don't-repair standing capability**, the completeness counterpart to C010's on-scope reconciliation: where C010 - Charter finds content that has drifted *outside* the declared scope, C009 finds scope territory the corpus *has not yet reached*. It reads three gap signals — dangling links (C005 - Index & Navigation), the declared scope (C010 - Charter), and its own agent scan of the corpus through C004 - OKF Conformance — clusters them into one gap agenda, and routes each confirmed gap to a write verb the steward directs (`create` for an absent area, `revise` to deepen a thin one, both on C003 - Integration Authoring). It writes nothing to the corpus itself. It fulfills coverage review (O007-R002) outright and shares assisted upkeep (O004-R003) with C006, C007, C008, and C010; it is the guard for silent gaps (O007-RSK002). Its agent scan is self-contained, following the precedent [ADR004](../drs/ADR004-triage-disposition-model.md) and [ADR005](../drs/ADR005-integration-authoring-provenance-and-merge.md) set — no dependency on C002's overlap machinery. The signal model, no-charter degradation, and scope-anchored suppression are captured in [ADR013](../drs/ADR013-coverage-review-signal-model.md).
+C009 is a **detect-don't-repair standing capability**, the completeness counterpart to C010's on-scope reconciliation: where C010 - Charter finds content that has drifted *outside* the declared scope, C009 finds scope territory the corpus *has not yet reached*. It reads three gap signals — dangling links (C005 - Index & Navigation), the declared scope (C010 - Charter), and its own agent scan of the corpus through C004 - OKF Conformance — clusters them into one gap agenda, and routes each confirmed gap to a write verb the steward directs (`create` for an absent area, `revise` to deepen a thin one, both on C003 - Integration Authoring). It writes nothing to the corpus itself. It fulfills coverage review (O007-R002) outright and shares assisted upkeep (O004-R003) with the corpus's other detect faces and C003's remediation verbs; it is the guard for silent gaps (O007-RSK002). Its agent scan is self-contained, following the precedent [ADR004](../drs/ADR004-triage-disposition-model.md) and [ADR005](../drs/ADR005-integration-authoring-provenance-and-merge.md) set — no dependency on C002's overlap machinery. The signal model, no-charter degradation, and scope-anchored suppression are captured in [ADR013](../drs/ADR013-coverage-review-signal-model.md).
 
 ## Data model
 
@@ -79,3 +79,7 @@ C009 exposes an in-process face. Every corpus read goes through C004; the corpus
 
 - [ADR013 - Coverage review signal model and scope-anchored gap suppression](../drs/ADR013-coverage-review-signal-model.md)
 - [ADR003 - Charter as an in-corpus concept and single scope authority](../drs/ADR003-charter-as-in-corpus-concept.md)
+
+### Change Records
+
+- [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)

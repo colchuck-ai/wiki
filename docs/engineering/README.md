@@ -112,7 +112,7 @@ See [C010 - Charter](components/C010-charter.md).
 - **O003-R004 - Significance bar**: C002 - Triage
 - **O004-R001 - Intent-driven authoring**: C003 - Integration Authoring
 - **O004-R002 - Convention encapsulation**: C004 - OKF Conformance
-- **O004-R003 - Assisted upkeep**: C006 - Source Revalidation, C007 - Currency Tracking, C008 - Lifecycle & Retirement, C009 - Coverage Review, C010 - Charter
+- **O004-R003 - Assisted upkeep**: C003 - Integration Authoring, C006 - Source Revalidation, C007 - Currency Tracking, C008 - Lifecycle & Retirement, C009 - Coverage Review, C010 - Charter
 - **O005-R001 - Navigable index**: C005 - Index & Navigation
 - **O005-R002 - Reasoned cross-links**: C003 - Integration Authoring, C005 - Index & Navigation
 - **O005-R003 - Referential integrity**: C005 - Index & Navigation
@@ -148,3 +148,4 @@ See [C010 - Charter](components/C010-charter.md).
 
 - [CR003 - Concept verb surface: create, revise, merge](../crs/CR003-concept-verb-surface.md)
 - [CR005 - Merge composition integrity: content_preserved and atomicity](../crs/CR005-merge-composition-integrity.md)
+- [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../crs/CR006-assisted-upkeep-traceability.md)

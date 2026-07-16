@@ -2,7 +2,7 @@
 
 Holds the steward's declaration of the corpus's purpose and scope as an optional, persistent anchor; applies a core-purpose revision in place; and periodically reconciles the corpus against the declared scope to surface content that has drifted out of it.
 
-C010 is the corpus's **single scope authority**. It owns one artifact — the charter — and the periodic sweep that measures the existing corpus against it. It realizes the architecture principle that both adjudications of scope resolve against one declaration: per-item triage of incoming material at intake (C002 - Triage) and periodic reconciliation of what is already in the corpus (C010) read the same charter, so scope cannot fork. C010 detects drift; it does not repair it — retiring an out-of-scope concept is the steward's judgment, executed by C008 - Lifecycle & Retirement. The charter is stored as an ordinary OKF concept (`type: charter`) so it travels with the bundle and is read and written only through C004's helpers; C010 encodes no OKF structural knowledge (see [ADR003](../drs/ADR003-charter-as-in-corpus-concept.md)).
+C010 is the corpus's **single scope authority**. It owns one artifact — the charter — and the periodic sweep that measures the existing corpus against it. It realizes the architecture principle that both adjudications of scope resolve against one declaration: per-item triage of incoming material at intake (C002 - Triage) and periodic reconciliation of what is already in the corpus (C010) read the same charter, so scope cannot fork. C010 detects drift; it does not repair it — retiring an out-of-scope concept is the steward's judgment, executed by C008 - Lifecycle & Retirement. That detect-and-surface posture is C010's share of assisted upkeep (O004-R003), alongside the corpus's other detect faces and C003's remediation verbs — scope drift is surfaced so the steward audits nothing by hand. The charter is stored as an ordinary OKF concept (`type: charter`) so it travels with the bundle and is read and written only through C004's helpers; C010 encodes no OKF structural knowledge (see [ADR003](../drs/ADR003-charter-as-in-corpus-concept.md)).
 
 ## Data model
 
@@ -75,3 +75,7 @@ C010 exposes an in-process face. Reads and writes of the charter concept go thro
 
 - [ADR003 - Charter as an in-corpus concept and single scope authority](../drs/ADR003-charter-as-in-corpus-concept.md)
 - [ADR013 - Coverage review signal model and scope-anchored gap suppression](../drs/ADR013-coverage-review-signal-model.md)
+
+### Change Records
+
+- [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)

@@ -2,7 +2,7 @@
 
 Detects when a cited source has changed since a claim was drawn from it — comparing the live source against the durable reference or captured snapshot — and reports drift for the steward rather than repairing it.
 
-C006 is a **read-and-compare layer** over concepts C003 has already authored: it never authors, edits, or repairs a concept or its citations. It fulfills drift detection (O001-R003) outright and, through that signal, feeds the undetected-staleness risk C001-RSK002 and O002-RSK001 name — its output is one of the measurable retirement signals C008 - Lifecycle & Retirement will later weigh (O003-R002). C006 is the only component that reaches outside the repository: revalidating a captured-snapshot citation means fetching its live `origin` URL, a mechanical byte comparison rather than the kind of judgment call C002's overlap scan or C010's reconciliation delegate to an agent pass. Like C005 and C010, C006 detects and reports; it repairs nothing itself.
+C006 is a **read-and-compare layer** over concepts C003 has already authored: it never authors, edits, or repairs a concept or its citations. It fulfills drift detection (O001-R003) outright and, as one of the corpus's detect faces, shares assisted upkeep (O004-R003) with the corpus's other detect faces and C003's remediation verbs — surfacing drift so the steward audits no source by hand. Through that same signal it feeds the undetected-staleness risk C001-RSK002 and O002-RSK001 name — its output is one of the measurable retirement signals C008 - Lifecycle & Retirement will later weigh (O003-R002). C006 is the only component that reaches outside the repository: revalidating a captured-snapshot citation means fetching its live `origin` URL, a mechanical byte comparison rather than the kind of judgment call C002's overlap scan or C010's reconciliation delegate to an agent pass. Like C005 and C010, C006 detects and reports; it repairs nothing itself.
 
 C006 reads a citation's live locator and its drift baseline entirely off the authored concept and the repository — it has no runtime dependency on C001 - Ingestion Queue's task record after a concept is authored ([ADR007](../drs/ADR007-citation-link-form-for-drift-revalidation.md)).
 
@@ -74,3 +74,4 @@ C006 exposes an in-process face plus one live network read. Every corpus read go
 ### Change Records
 
 - [CR001 - External citations cite the live origin](../../crs/CR001-external-citations-cite-live-origin.md)
+- [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)

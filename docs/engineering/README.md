@@ -9,7 +9,7 @@ Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by
 - **Producer-agnostic intake.** One entry point makes no assumption about who submitted an item, so people, tools, and agents share one path and one adjudication gate.
 - **Cite by durable reference.** A concept cites its source by reference; the reference resolves to something version-controlled alongside the corpus, and a snapshot is captured only as a fallback when the source cannot be referenced durably in place. Provenance travels with the concept.
 - **Two kinds of link.** Knowledge cross-links between concepts form the navigable graph and stay within the corpus; provenance references from a concept to its source are a separate class that may point outward.
-- **Never dead-end the graph.** Removal is modeled as deprecation with a replacement pointer, and inbound links are resolved before any removal or relocation, so traversal never reaches nothing.
+- **Never dead-end the graph.** Retiring or relocating a concept always repairs every inbound link that action would otherwise orphan — retargeted to the new path on relocation, unlinked to plain text on retirement — so traversal never reaches nothing. Deprecating a concept in place needs no repair, since its file simply stays put.
 - **The charter is the single scope authority.** Both per-item triage and periodic reconciliation adjudicate against the one declared charter; its core purpose is revisable in place.
 
 ## Constraints
@@ -53,7 +53,7 @@ See [C004 - OKF Conformance](components/C004-okf-conformance.md).
 
 ### C005 - Index & Navigation
 
-Maintains the navigable index of what the corpus contains, traverses the knowledge cross-link graph, and surfaces the inbound links to a concept before it is removed or relocated so nothing is left following a dangling reference.
+Maintains the navigable index of what the corpus contains, traverses the knowledge cross-link graph, and surfaces the inbound links to a concept before it is retired or relocated so C008 can repair them and nothing is left following a dangling reference.
 
 See [C005 - Index & Navigation](components/C005-index-navigation.md).
 
@@ -71,7 +71,9 @@ See [C007 - Currency Tracking](components/C007-currency-tracking.md).
 
 ### C008 - Lifecycle & Retirement
 
-Marks a concept deprecated or superseded — with a reason and, where one exists, a replacement pointer — rather than deleting it, and surfaces retirement candidates from measurable signals (staleness, source drift, supersession) for the steward's judgment.
+Retires a concept — by deleting it outright (auto-repairing every inbound link) or by marking it deprecated or superseded in place with a reason and, where one exists, a replacement pointer — relocates a concept to a new path with its inbound links retargeted automatically, and surfaces retirement candidates from measurable signals (staleness, source drift, supersession) for the steward's judgment.
+
+See [C008 - Lifecycle & Retirement](components/C008-lifecycle-retirement.md).
 
 ### C009 - Coverage Review
 
@@ -121,3 +123,4 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR006 - Index materialization and on-demand graph computation](drs/ADR006-index-materialization-and-graph-computation.md)
 - [ADR007 - Citation link form for drift revalidation](drs/ADR007-citation-link-form-for-drift-revalidation.md)
 - [ADR008 - Recency materialization and per-directory log scoping](drs/ADR008-recency-materialization-and-log-scoping.md)
+- [ADR009 - Retirement, relocation, and link-repair model](drs/ADR009-retirement-relocation-and-link-repair-model.md)

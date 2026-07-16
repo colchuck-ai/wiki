@@ -101,13 +101,13 @@ Minimize the time to locate the knowledge relevant to a question when navigating
 **Risks**
 
 - **O005-RSK001** - Flat sprawl: The body of knowledge grows without navigational structure, so a consumer must scan the whole of it to find what is relevant.
-- **O005-RSK002** - Dead-end on change: When a concept is removed or relocated, links pointing to it are left dangling, so a consumer traversing relationships reaches nothing.
+- **O005-RSK002** - Dead-end on change: When a concept is retired or relocated, links pointing to it are left dangling, so a consumer traversing relationships reaches nothing.
 
 **Requirements**
 
 - **O005-R001** - Navigable index: The product must maintain a navigable listing of what the body of knowledge contains, so a consumer can see what exists before opening individual documents.
 - **O005-R002** - Reasoned cross-links: The product must link related concepts, with the reason for each link stated, so consumers can traverse relationships rather than only search.
-- **O005-R003** - Referential integrity: The product must surface the inbound links to a concept before it is removed or relocated, so they can be resolved rather than left dangling.
+- **O005-R003** - Referential integrity: The product must surface the inbound links to a concept before it is retired or relocated, so they can be resolved rather than left dangling.
 
 **Risk-Requirement Map**
 

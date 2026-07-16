@@ -91,6 +91,8 @@ See [C008 - Lifecycle & Retirement](components/C008-lifecycle-retirement.md).
 
 Surfaces areas within the intended scope that are thin or absent — from dangling links, the charter's scope, and agent-proposed gaps — as a sourcing agenda for the steward, so gaps do not persist unnoticed.
 
+See [C009 - Coverage Review](components/C009-coverage-review.md).
+
 ### C010 - Charter
 
 Holds the steward's declaration of the corpus's purpose and scope as an optional, persistent anchor; applies a core-purpose revision in place; and periodically reconciles the corpus against the declared scope to surface content that has drifted out of it.
@@ -139,6 +141,7 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR010 - Citation pruning on merge reconciliation](drs/ADR010-citation-pruning-on-merge.md)
 - [ADR011 - Concept verb surface](drs/ADR011-concept-verb-surface.md)
 - [ADR012 - Repair-to-successor link model](drs/ADR012-repair-to-successor-link-model.md)
+- [ADR013 - Coverage review signal model and scope-anchored gap suppression](drs/ADR013-coverage-review-signal-model.md)
 
 ### Change Records
 

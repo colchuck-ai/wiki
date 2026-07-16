@@ -47,7 +47,7 @@ C010 exposes an in-process face. Reads and writes of the charter concept go thro
 
 - **C004 - OKF Conformance**: the charter is an OKF concept read and written only through C004's parse/serialize helpers; C010 relies on C004's tolerance of the unknown `type: charter` and encodes no OKF structural literal. C010 owns the charter's body semantics (Purpose / In scope / Out of scope); C004 owns the concept format.
 - **C002 - Triage**: reads `get_charter` to adjudicate incoming material against the declared scope (O008-R002). C010 owns the charter; C002 is a reader. Same authority, intake timing.
-- **C009 - Coverage Review**: reads the declared scope as one input to its sourcing agenda (O007-R002), and excludes the charter concept itself from coverage analysis.
+- **C009 - Coverage Review**: reads the declared scope as one input to its sourcing agenda (O007-R002), and excludes the charter concept itself from coverage analysis. The charter's `# Out of scope` doubles as C009's gap-suppression mechanism — a steward silences a deliberately-uncovered area by adding it here rather than through any C009-owned dismissal store, so scope stays single-authority ([ADR013](../drs/ADR013-coverage-review-signal-model.md)). C009 is the completeness counterpart to `reconcile`: reconciliation finds content drifted *outside* scope, coverage review finds scope *not yet reached*.
 - **C008 - Lifecycle & Retirement**: when the steward chooses to act on an out-of-scope drift candidate, C008 executes either mechanism — `deprecate` (marking it in place with a reason) or `delete` (removing it outright, with its inbound links auto-repaired to their successor) — the steward's free choice either way. C010 detects the candidate; C008 executes. C010 excludes the charter concept from retirement candidacy.
 - **C007 - Currency Tracking**: the charter concept, like any concept, gets recency and change history from C007; charter revision-in-place inherits its version trail this way.
 - **C005 - Index & Navigation**: indexes the charter as a concept; any distinct presentation of it as meta is C005's concern, not C010's.
@@ -74,3 +74,4 @@ C010 exposes an in-process face. Reads and writes of the charter concept go thro
 ### Architectural Decision Records
 
 - [ADR003 - Charter as an in-corpus concept and single scope authority](../drs/ADR003-charter-as-in-corpus-concept.md)
+- [ADR013 - Coverage review signal model and scope-anchored gap suppression](../drs/ADR013-coverage-review-signal-model.md)

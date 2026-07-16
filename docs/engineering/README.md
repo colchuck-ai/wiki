@@ -10,7 +10,7 @@ Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by
 - **Cite by durable reference.** A concept cites its source by reference; the reference resolves to something version-controlled alongside the corpus, and a snapshot is captured only as a fallback when the source cannot be referenced durably in place. Provenance travels with the concept.
 - **Two kinds of link.** Knowledge cross-links between concepts form the navigable graph and stay within the corpus; provenance references from a concept to its source are a separate class that may point outward.
 - **Never dead-end the graph — repair to the successor.** Deleting, moving, or merging away a concept always repairs every inbound link that action would otherwise orphan, pointing each at the departing concept's successor: retargeted to the new path on a `move`, redirected to the replacement or merge target on a `delete`-with-replacement or `merge`, or unlinked to plain text on a `delete` with no successor — so traversal never reaches nothing (see [ADR012](drs/ADR012-repair-to-successor-link-model.md)). Deprecating a concept in place needs no repair, since its file simply stays put.
-- **Write verbs carry their own effects.** Each concept write — `create`, `revise`, `move`, `delete`, `deprecate` — records its own recency and change history (C007) and regenerates the affected index (C005) as part of the verb, so no caller orchestrates those steps and they cannot drift out of step with content (see [ADR011](drs/ADR011-concept-verb-surface.md)).
+- **Write verbs carry their own effects.** Each concept write — `create`, `revise`, `move`, `delete`, `deprecate` — records its own recency and change history (C007) and regenerates the affected index (C005) as part of the verb, so no caller orchestrates those steps and they cannot drift out of step with content (see [ADR011](drs/ADR011-concept-verb-surface.md)). Atomicity composes: the `merge` composition (`revise` + `delete`) commits as one unit or not at all — one git commit or none — so it can never half-complete into a duplicate (see [ADR014](drs/ADR014-merge-composition-integrity.md)).
 - **The charter is the single scope authority.** Both per-item triage and periodic reconciliation adjudicate against the one declared charter; its core purpose is revisable in place.
 
 ## Constraints
@@ -142,7 +142,9 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR011 - Concept verb surface](drs/ADR011-concept-verb-surface.md)
 - [ADR012 - Repair-to-successor link model](drs/ADR012-repair-to-successor-link-model.md)
 - [ADR013 - Coverage review signal model and scope-anchored gap suppression](drs/ADR013-coverage-review-signal-model.md)
+- [ADR014 - Merge composition integrity](drs/ADR014-merge-composition-integrity.md)
 
 ### Change Records
 
 - [CR003 - Concept verb surface: create, revise, merge](../crs/CR003-concept-verb-surface.md)
+- [CR005 - Merge composition integrity: content_preserved and atomicity](../crs/CR005-merge-composition-integrity.md)

@@ -2,6 +2,8 @@
 
 Materialize `index.md` as a physical, git-tracked, OKF §6 artifact that C005 - Index & Navigation generates and keeps in sync at every directory containing concepts, but compute the cross-link graph and inbound-link lookups **on demand** by scanning the corpus through C004 rather than maintaining a materialized reverse-link index.
 
+> **Superseded in part by [ADR011](ADR011-concept-verb-surface.md):** `reindex` is no longer a terminal call that corpus-writers (C003, C008) must remember to trigger — it becomes an **internal effect** of each write verb, so index drift is eliminated by construction rather than left as a caller obligation to catch via Lint. The storage decision recorded below — materialize `index.md` per directory, compute the cross-link graph and inbound-link lookups on demand — is retained unchanged; only the caller-orchestrated framing of the `reindex` step (in the chosen Index-storage option and the second Consequence) is superseded.
+
 ## Context
 
 C005 - Index & Navigation fulfills O005-R001 (navigable index), O005-R003 (referential integrity), and shares O005-R002 (reasoned cross-links) with C003. Two independent storage questions had to be settled before its interfaces could be specced:

@@ -99,7 +99,23 @@ All problems below are semantic. `⚑` = independently raised by two lenses (hig
 
 ## Tier 2 — Significant
 
-### [ ] T2.1 — [Engineering · ⚑] ADR006 & ADR008 silently superseded by ADR011 (no banner)
+### [x] T2.1 — [Engineering · ⚑] ADR006 & ADR008 silently superseded by ADR011 (no banner)
+- **Done (2026-07-17, uncommitted):** Added the `> **Superseded in part by [ADR011]…**` banner to both
+  ADR006 (caller-orchestrated `reindex` → verb-internal effect; index-storage decision itself retained) and
+  ADR008 (terminal `record` → verb-internal effect; `history(concept_id)` per-directory → bundle-wide; the
+  materialization decision itself retained). Annotated ADR008's stale third Consequence inline
+  (`**— Reversed by [ADR011]:**`) — kept the still-true physical fact (entries stay behind in the old
+  directory's `log.md`, never moved) and reversed only the now-false query claim ("will not surface
+  pre-relocation entries"). Closed the reciprocal side: added ADR006 and ADR008 to ADR011's *Affected
+  elements* (ADR011 already linked ADR008 at line 17 but never ADR006, so the forward banner would have
+  broken bidirectionality). **Bonus:** a tree sweep for the same stale framing found a live contradiction at
+  `C005-index-navigation.md:39` — an edge case still naming "a writer bypassed the [reindex] contract" and
+  claiming "Lint/Survey passes that call `reindex`," which contradicted both ADR011's internal-effect model
+  *and* C005's own line 51 ("Lint never calls `reindex`… mutates nothing"). Rewrote it as the true residual
+  case (corpus changed *outside the verb surface* → drift surfaced by a read-only Lint/Survey freshness
+  check). Verified C007's sibling phrasings were already aligned (bundle-wide `history` at line 20/37, soft
+  out-of-band framing) — no change needed there. Type: update (records + one component edit); no decision
+  changed, so no CR/ADR. Linter clean (38 files, 0/0); binary checklist passed.
 - **Problem:** ADR005/ADR009 carry `> Superseded in part by…` banners; ADR006
   (caller-orchestrated `reindex`) and ADR008 (per-directory `history` truncation) do not,
   yet ADR011 overturned both. Live C007 contradicts ADR008's still-current-sounding

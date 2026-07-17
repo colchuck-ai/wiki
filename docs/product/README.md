@@ -197,6 +197,10 @@ Maximize the proportion of claims in the body of knowledge a consumer can rely o
 
 - [PDR001 - Claim fidelity as a first-class outcome](drs/PDR001-claim-fidelity-outcome.md)
 
+**Change Records**
+
+- [CR007 - Claim grounding trace: O009 requirements to C003](../crs/CR007-claim-grounding-trace.md)
+
 ## See Also
 
 ### Product Decision Records

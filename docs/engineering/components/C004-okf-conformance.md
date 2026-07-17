@@ -12,6 +12,7 @@ C004 owns, as data, the format facts every other component would otherwise have 
 - **Concept ID rule** (OKF §2). A concept's ID is its bundle-relative file path with the `.md` suffix removed (`tables/users.md` → `tables/users`). C004 derives IDs and resolves them back to paths; other components identify concepts by ID without re-deriving it.
 - **Reserved filenames** (OKF §3.1). `index.md` and `log.md` have defined meaning at any level and are never concept documents. Every other `.md` file is a concept.
 - **Wiki naming convention.** OKF leaves file naming to producers (§3); Wiki fixes one convention so contributors need not choose. Concept filenames are lowercase kebab-case slugs; C004 derives a slug from a concept's `title` and disambiguates collisions deterministically. Directory topology (how concepts are grouped into subdirectories) stays a producer/steward choice per OKF — C004 constrains slug form and reserved-name avoidance, not the tree shape.
+- **Grounding-signal marker.** The per-claim convention for recording how well a claim is grounded in its cited source (O009-R002). OKF leaves this to producers; Wiki fixes one marker form so the signal is legible and diffable across the corpus. A **Wiki convention, not an OKF rule** — permitted under OKF's producer extensions (§4.2 conventional body markers, §9 tolerant consumption), so it needs no OKF change. C004 owns the marker's *shape*; C003 supplies its *value* (the `check_grounding` verdict), the same split C004 and C007 hold for `timestamp`.
 - **Finding model.** A validation result is a list of findings, each `{ severity, rule, concept-id-or-path, location, message }`, where `severity` is `error` (OKF §9 conformance breakage) or `advisory` (Wiki structural profile). Findings describe; they never mutate.
 - **Pinned version record.** The single OKF version C004 targets (0.1), sourced from the vendored spec and its pin in [`vendor/okf/PROVENANCE.md`](../../../vendor/okf/PROVENANCE.md).
 
@@ -29,6 +30,7 @@ C004 exposes two in-process faces. Both are pure of corpus side effects except w
 - **Citation block format** (OKF §8) — render/parse a numbered `# Citations` block. Consumed by C003.
 - **Link syntax** (OKF §5) — construct bundle-relative (`/…`) cross-links, the recommended stable form. Consumed by C003 and C005.
 - **Deprecation marker** — the frontmatter/body convention for marking a concept deprecated or superseded with a replacement pointer. Consumed by C008.
+- **Grounding-signal marker** (OKF §4.2 body convention, Wiki profile) — render/parse the per-claim marker carrying a claim's grounding verdict against its cited source. Consumed by C003, which supplies the verdict value.
 
 **Validator (the "check" face).** `validate(target) → findings[]`, where `target` is a single concept, a subtree, or the whole bundle. Classifies each violation by severity (below). This is the engine behind the product's **Lint** operation. Read-only.
 
@@ -60,12 +62,12 @@ C004 exposes two in-process faces. Both are pure of corpus side effects except w
 
 ## Relationships
 
-- **C003 - Integration Authoring**: primary consumer of the write face — serializes frontmatter, derives slugs/paths, formats citation blocks and cross-links, then writes the concept directly; may call `validate` on the result.
+- **C003 - Integration Authoring**: primary consumer of the write face — serializes frontmatter, derives slugs/paths, formats citation blocks, cross-links, and the per-claim grounding-signal marker, then writes the concept directly; may call `validate` on the result. C004 owns the grounding marker's shape; the verdict it carries is C003's.
 - **C005 - Index & Navigation**: uses the index-rendering and link-syntax conventions; C004 validates `index.md` *structure*, but link *integrity* (inbound resolution, dangling references) is owned by C005.
 - **C007 - Currency Tracking**: uses the `log.md` entry format and the `timestamp` field convention to record recency and history; C004 checks the shape/presence of `timestamp`, while writing and maintaining its value is C007's.
 - **C008 - Lifecycle & Retirement**: uses the deprecation-marker convention to mark concepts deprecated or superseded.
 - **C002 - Triage** (and any concept reader): uses the parse helper to read frontmatter and body without encoding the format itself.
-- **Boundary**: C004 owns format *shape* only. It does not own semantic content rules — whether every claim is cited (C003 authors, C006 revalidates), whether a concept is in scope (C002 / C010), or whether cross-links resolve (C005). Advisories flag structure that supports those requirements; they never adjudicate the requirement.
+- **Boundary**: C004 owns format *shape* only. It does not own semantic content rules — whether every claim is cited (C003 authors, C006 revalidates), whether a claim faithfully represents its source (C003's grounding check), whether a concept is in scope (C002 / C010), or whether cross-links resolve (C005). It owns the grounding-signal marker's *shape*, not the verdict it carries. Advisories flag structure that supports those requirements; they never adjudicate the requirement.
 
 ## Success criteria
 
@@ -87,3 +89,8 @@ C004 exposes two in-process faces. Both are pure of corpus side effects except w
 ### Architectural Decision Records
 
 - [ADR001 - Single OKF conformance boundary](../drs/ADR001-single-okf-conformance-boundary.md)
+- [ADR015 - Claim grounding seam](../drs/ADR015-claim-grounding-seam.md)
+
+### Change Records
+
+- [CR007 - Claim grounding trace: O009 requirements to C003](../../crs/CR007-claim-grounding-trace.md)

@@ -1,6 +1,6 @@
 # Wiki Curation Architecture
 
-Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by standing capabilities that keep the corpus trustworthy as it grows. Raw material enters at one producer-agnostic point (Ingestion Queue), is adjudicated by Triage against the charter's scope and other admission criteria, and — once the steward gives direction — is authored into the corpus by the tool (Integration Authoring). Around the pipeline, standing capabilities keep the corpus discoverable, current, provenanced, on-scope, and high-signal (Index & Navigation, Source Revalidation, Currency Tracking, Lifecycle & Retirement, Coverage Review, Charter). Format knowledge lives in exactly one place — OKF Conformance — as the conventions the tool authors to and a validator that checks the corpus, so no other component encodes the format. The steward drives all of it by **intent**, through a curation Agent Skill: the tool surfaces what needs attention and performs the work; the steward supplies judgment. Components read and write concepts directly following the OKF conventions; they do not share mutable state.
+Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by standing capabilities that keep the corpus trustworthy as it grows. Raw material enters at one producer-agnostic point (Ingestion Queue), is adjudicated by Triage against the charter's scope and other admission criteria, and — once the steward gives direction — is authored into the corpus by the tool, each claim checked for fidelity to its cited source (Integration Authoring). Around the pipeline, standing capabilities keep the corpus discoverable, current, provenanced, on-scope, and high-signal (Index & Navigation, Source Revalidation, Currency Tracking, Lifecycle & Retirement, Coverage Review, Charter). Format knowledge lives in exactly one place — OKF Conformance — as the conventions the tool authors to and a validator that checks the corpus, so no other component encodes the format. The steward drives all of it by **intent**, through a curation Agent Skill: the tool surfaces what needs attention and performs the work; the steward supplies judgment. Components read and write concepts directly following the OKF conventions; they do not share mutable state.
 
 ## Principles
 
@@ -9,6 +9,7 @@ Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by
 - **Producer-agnostic intake.** One entry point makes no assumption about who submitted an item, so people, tools, and agents share one path and one adjudication gate.
 - **Cite by durable reference.** A concept cites its source by reference; the reference resolves to something version-controlled alongside the corpus, and a snapshot is captured only as a fallback when the source cannot be referenced durably in place. Provenance travels with the concept.
 - **Two kinds of link.** Knowledge cross-links between concepts form the navigable graph and stay within the corpus; provenance references from a concept to its source are a separate class that may point outward.
+- **Author faithful claims, not just cited ones.** Distilling a source into claims is where distortion enters, so the tool checks each authored claim against the source it cites, flags unsupported claims for the steward, and records a per-claim grounding signal consumers can read — making a claim trustworthy on sight, not merely traceable back to a source (see [ADR015](drs/ADR015-claim-grounding-seam.md)). Fidelity checking is heuristic: the tool recommends, the steward decides.
 - **Never dead-end the graph — repair to the successor.** Deleting, moving, or merging away a concept always repairs every inbound link that action would otherwise orphan, pointing each at the departing concept's successor: retargeted to the new path on a `move`, redirected to the replacement or merge target on a `delete`-with-replacement or `merge`, or unlinked to plain text on a `delete` with no successor — so traversal never reaches nothing (see [ADR012](drs/ADR012-repair-to-successor-link-model.md)). Deprecating a concept in place needs no repair, since its file simply stays put.
 - **Write verbs carry their own effects.** Each concept write — `create`, `revise`, `move`, `delete`, `deprecate` — records its own recency and change history (C007) and regenerates the affected index (C005) as part of the verb, so no caller orchestrates those steps and they cannot drift out of step with content (see [ADR011](drs/ADR011-concept-verb-surface.md)). Atomicity composes: the `merge` composition (`revise` + `delete`) commits as one unit or not at all — one git commit or none — so it can never half-complete into a duplicate (see [ADR014](drs/ADR014-merge-composition-integrity.md)).
 - **The charter is the single scope authority.** Both per-item triage and periodic reconciliation adjudicate against the one declared charter; its core purpose is revisable in place.
@@ -30,10 +31,10 @@ Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by
 
 The curation Agent Skill exposes four steward-facing operations over the components below. Only **Ingest** and the remediation verbs write; **Survey** and **Lint** mutate nothing — they surface findings for the steward, who then directs a write verb to act (recommend-and-confirm; intent in, work out). **Query** is read-only consumption. The write verbs — `create`, `revise`, `move`, `delete`, `deprecate`, and the `merge` composition — live on C003 and C008, and each carries its own recency, history, index, and link-repair effects ([ADR011](drs/ADR011-concept-verb-surface.md)).
 
-- **Ingest** — build and integrate new material. C001 - Ingestion Queue records and durably holds a submission; C002 - Triage recommends a disposition and records the steward's decision; on admission C003 - Integration Authoring `create`s a new concept or `revise`s an existing one (and `merge`s two existing concepts when the steward is consolidating duplicates).
+- **Ingest** — build and integrate new material. C001 - Ingestion Queue records and durably holds a submission; C002 - Triage recommends a disposition and records the steward's decision; on admission C003 - Integration Authoring `create`s a new concept or `revise`s an existing one (and `merge`s two existing concepts when the steward is consolidating duplicates), checking each authored claim against its cited source and surfacing the distillation for the steward to confirm before the write commits (O009).
 - **Survey** — keep the corpus true, current, on-scope, and complete *over time* (substance and currency, needing the steward's judgment). A read-only aggregation of the components' detect faces: source drift (`C006.revalidate_all`), staleness and recent change (`C007.recency` / `history_all`), retirement candidates from staleness + drift + supersession (`C008.retirement_candidates`), scope drift (`C010.reconcile`), and coverage gaps (C009 - Coverage Review). Each finding routes to a write verb the steward directs — drift → `revise`; retirement candidate or out-of-scope → `delete` / `deprecate` / `move`; gap → `create` — none of which Survey performs itself.
 - **Lint** — check that the corpus is well-formed and internally consistent *right now* (form and consistency, mechanical and mostly objective). OKF structural conformance (`C004.validate`), referential integrity (`C005.dangling_links`), and index/recency freshness (`C005.reindex` idempotence, `C007.recency`). A finding is resolved by a `revise` or a mechanical re-render. Because materialization is a verb effect, index and recency can no longer drift from a forgotten call ([ADR011](drs/ADR011-concept-verb-surface.md)) — Lint's freshness check narrows to concepts authored before the tooling or hand-edited outside the verbs.
-- **Query** — consume the corpus. Reading a concept or the index is direct file access (the plain-text concepts and the materialized `index.md`); the reads that compute — `C005.graph` / `inbound_links`, `C007.history` — are available for traversal. Query performs no curation write and needs no dedicated verb.
+- **Query** — consume the corpus. Reading a concept or the index is direct file access (the plain-text concepts and the materialized `index.md`); a concept's per-claim grounding signals (O009-R002) are read inline with its content, so a consumer can tell a source-backed claim from one that needs checking. The reads that compute — `C005.graph` / `inbound_links`, `C007.history` — are available for traversal. Query performs no curation write and needs no dedicated verb.
 
 Survey and Lint have no owning component: each is a skill-level aggregation of the detect faces named above, distinct from Ingest, which runs the C001 → C002 → C003 pipeline. The dividing line between them is *substance over time* (Survey) versus *form right now* (Lint).
 
@@ -53,7 +54,7 @@ See [C002 - Triage](components/C002-triage.md).
 
 ### C003 - Integration Authoring
 
-Authors concept content through two write verbs — `create` (a new concept from an admitted task) and `revise` (an existing concept in place, from a task, another concept, or the steward's direction) — composing prose, source citations, and reasoned cross-links, and provides the `merge` composition (`revise` + `delete`) that combines two existing concepts.
+Authors concept content through two write verbs — `create` (a new concept from an admitted task) and `revise` (an existing concept in place, from a task, another concept, or the steward's direction) — composing prose, source citations, and reasoned cross-links, and provides the `merge` composition (`revise` + `delete`) that combines two existing concepts. As it authors, it checks each claim against its cited source, surfaces the distillation for the steward's confirmation, and records a per-claim grounding signal (O009).
 
 See [C003 - Integration Authoring](components/C003-integration-authoring.md).
 
@@ -124,6 +125,9 @@ See [C010 - Charter](components/C010-charter.md).
 - **O008-R001 - Charter declaration**: C010 - Charter
 - **O008-R002 - Scope-aware triage**: C002 - Triage
 - **O008-R003 - Scope reconciliation**: C010 - Charter
+- **O009-R001 - Source-grounded authoring**: C003 - Integration Authoring
+- **O009-R002 - Legible grounding**: C003 - Integration Authoring
+- **O009-R003 - Distillation review**: C003 - Integration Authoring
 
 ## See Also
 
@@ -143,9 +147,11 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR012 - Repair-to-successor link model](drs/ADR012-repair-to-successor-link-model.md)
 - [ADR013 - Coverage review signal model and scope-anchored gap suppression](drs/ADR013-coverage-review-signal-model.md)
 - [ADR014 - Merge composition integrity](drs/ADR014-merge-composition-integrity.md)
+- [ADR015 - Claim grounding seam](drs/ADR015-claim-grounding-seam.md)
 
 ### Change Records
 
 - [CR003 - Concept verb surface: create, revise, merge](../crs/CR003-concept-verb-surface.md)
 - [CR005 - Merge composition integrity: content_preserved and atomicity](../crs/CR005-merge-composition-integrity.md)
 - [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../crs/CR006-assisted-upkeep-traceability.md)
+- [CR007 - Claim grounding trace: O009 requirements to C003](../crs/CR007-claim-grounding-trace.md)

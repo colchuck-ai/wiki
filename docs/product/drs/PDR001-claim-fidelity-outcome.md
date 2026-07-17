@@ -28,6 +28,6 @@ O009 introduces **no new source-retention mechanism**. Its checks read against t
 
 - The distiller's most characteristic failure now has a measurable target and an explicit mitigation trace (authoring check → consumer grounding signal → steward distillation review).
 - "Trustworthy" in the product headline is now fully decomposed across outcomes, with no silent gap between "cited" and "correct."
-- O009's three requirements currently map to no component; a follow-up engineering trace is required to assign owners (source-grounding check, consumer-facing grounding signal, claim-alongside-source review view).
+- O009's three requirements now trace to **C003 - Integration Authoring**, which owns the author-time grounding check (O009-R001), the per-claim grounding signal (O009-R002), and the distillation review (O009-R003). The seam placement and its alternatives are recorded in [ADR015](../../engineering/drs/ADR015-claim-grounding-seam.md); the trace itself in [CR007](../../crs/CR007-claim-grounding-trace.md). (Originally logged here as an open follow-up — assign owners for the source-grounding check, the consumer-facing grounding signal, and the claim-alongside-source review view — and discharged by that trace.)
 - Fidelity checking is heuristic — judging whether a claim is supported by a source is itself fallible — so the outcome is stated as *maximize the proportion*, not as a guarantee.
 - Reusing O001-R002 keeps provenance and fidelity on one durable-source substrate; a change to how sources are held durably now affects both outcomes.

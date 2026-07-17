@@ -150,7 +150,23 @@ All problems below are semantic. `⚑` = independently raised by two lenses (hig
   review degrades to best-effort when no charter exists.
 - **Type:** update.
 
-### [ ] T2.6 — [Engineering · traceability] O009 requirements have no component owner
+### [x] T2.6 — [Engineering · traceability] O009 requirements have no component owner
+- **Done (2026-07-17, uncommitted):** Ran the engineering trace, design-first via `/codebase-design`.
+  Placed all three O009 requirements on **C003 - Integration Authoring** as a self-contained,
+  author-time **grounding** capability — `check_grounding(draft) → claim_grounding[]`, shaped exactly
+  like C003's `propose_links` (internal, advisory, read-only agent pass). O009-R001 is its non-`supported`
+  subset flagged for the steward; O009-R003 is its output presented as the distillation review before the
+  write commits; O009-R002 is its verdict persisted as a per-claim **grounding signal**, materialized as a
+  terminal verb effect (C004 owns the marker *shape* under OKF's producer-extension allowance §4.2/§9 — no
+  OKF change; C003 owns the *value*, the same split C004/C007 have for `timestamp`). Ruled out C002 (no
+  authored claim at triage) and C006 (mechanical byte-drift, refuses semantic judgment — a different axis).
+  Chose C003-with-named-delegation-seam over a dedicated component (one caller today → hypothetical seam)
+  and over an unnamed fold (leaves the judgment untestable/unshareable). Authored
+  `ADR015-claim-grounding-seam.md` (alternatives A/B/C) and `CR007-claim-grounding-trace.md`; added the map
+  rows O009-R001/R002/R003 → C003; edited C003 (intro, data model, `check_grounding`, behavior, edge cases,
+  relationships, success criteria, notes/seam, See Also), C004 (grounding-signal marker convention), the
+  engineering README (map, C003 summary, Ingest/Query ops, a fidelity principle, intro sentence, See Also),
+  and discharged PDR001's "maps to no component" consequence. Linter clean; binary checklist passed.
 - **Problem:** T1.1 added outcome O009 (faithful representation) with three requirements —
   O009-R001 source-grounded authoring, O009-R002 legible grounding, O009-R003 distillation
   review — but none maps to a component in the engineering tree. The outcome is stated but

@@ -163,7 +163,19 @@ All problems below are semantic. `⚑` = independently raised by two lenses (hig
   `C007.recency_status` query; have Lint call those.
 - **Type:** update.
 
-### [ ] T2.4 — [Product] O005 has no retrieval-by-question path
+### [x] T2.4 — [Product] O005 has no retrieval-by-question path
+- **Done (2026-07-17, uncommitted):** Added risk **O005-RSK003 - Vocabulary mismatch** (consumer asks
+  in terms the knowledge wasn't titled/filed under → present knowledge unreachable by scanning → falls
+  back to the one person who holds it, the exact routing the spine forbids) and a solution-free requirement
+  **O005-R004 - Question-based retrieval** ("retrieve the concepts relevant to a question posed in their
+  own terms — not only browse the listing or follow cross-links"; no mechanism named), plus the map row
+  RSK003→R004. O005 discovery now decomposes across browse (R001) / traverse (R002) / integrity (R003) /
+  query (R004). Authored `PDR002-question-based-retrieval.md` (four alternatives: fold into the index /
+  lean on the agent-skill's inherent reading / scope out for the low-volume envelope / add as its own
+  risk+requirement — chosen) and `CR009-question-based-retrieval.md`; added PDR002 + CR009 backlinks to the
+  product statement's See Also. Deferred the engineering trace — O005-R004 maps to no component yet, the
+  same state O009 held after T1.1 — recorded as a PDR002 consequence and tracked below as **T2.7**. Linter
+  clean (40 files, 0/0); binary checklist passed.
 - **Problem:** Outcome is "locate knowledge relevant to a *question*," but every
   risk/requirement is browse/traversal (index, cross-links, integrity). The common failure
   — question/vocabulary mismatch to how the corpus is organized — has no risk. This is the
@@ -172,6 +184,21 @@ All problems below are semantic. `⚑` = independently raised by two lenses (hig
 - **Fix:** Add O005-RSK003 (vocabulary mismatch / no query path) + a solution-free
   requirement for question-based retrieval.
 - **Type:** update.
+
+### [ ] T2.7 — [Engineering · traceability] O005-R004 has no component owner
+- **Problem:** T2.4 added requirement O005-R004 (question-based retrieval) with no engineering
+  owner — the Requirement-Component Map has no O005-R004 row. Stated but unbuildable-as-traced,
+  the same gap O009 had after T1.1 (→ T2.6). A follow-up trace must decide where question-based
+  retrieval lives: an extension of C005 - Index & Navigation, a dedicated retrieval component, or
+  a capability of the Query operation / curation Agent Skill. Because O005-R004 is solution-free,
+  the trace chooses the mechanism (agent reasoning over the corpus vs. a built search/index)
+  without reopening the product decision. (Surfaced as a consequence in PDR002; not one of the
+  original 14 findings.)
+- **Location:** `docs/product/README.md` O005 block; `docs/engineering/README.md`
+  Requirement-Component Map; candidate homes C005 and the Query operation.
+- **Fix:** Run the engineering trace for O005-R004; add the map row and any component edits.
+  `/codebase-design` candidate (where the retrieval seam goes relative to the read-only Query path).
+- **Type:** update (map) + likely component edits → CR, possibly an ADR.
 
 ### [ ] T2.5 — [Product] O007/O008 share an undeclared dependency on an *optional* charter
 - **Problem:** O007 (coverage) leans on "intended scope," but the charter that defines

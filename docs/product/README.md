@@ -102,17 +102,20 @@ Minimize the time to locate the knowledge relevant to a question when navigating
 
 - **O005-RSK001** - Flat sprawl: The body of knowledge grows without navigational structure, so a consumer must scan the whole of it to find what is relevant.
 - **O005-RSK002** - Dead-end on change: When a concept is retired or relocated, links pointing to it are left dangling, so a consumer traversing relationships reaches nothing.
+- **O005-RSK003** - Vocabulary mismatch: A consumer asks in different terms than the ones the relevant knowledge was named and organized under, so scanning how the corpus is arranged never leads them to it and they cannot find knowledge that is in fact present — falling back to asking the one person who holds it.
 
 **Requirements**
 
 - **O005-R001** - Navigable index: The product must maintain a navigable listing of what the body of knowledge contains, so a consumer can see what exists before opening individual documents.
 - **O005-R002** - Reasoned cross-links: The product must link related concepts, with the reason for each link stated, so consumers can traverse relationships rather than only search.
 - **O005-R003** - Referential integrity: The product must surface the inbound links to a concept before it is retired or relocated, so they can be resolved rather than left dangling.
+- **O005-R004** - Question-based retrieval: The product must let a consumer retrieve the concepts relevant to a question posed in their own terms — not only browse the listing or follow cross-links — so knowledge that is present can be found without the consumer already knowing how it was named or filed.
 
 **Risk-Requirement Map**
 
 - **O005-RSK001 - Flat sprawl**: O005-R001 - Navigable index, O005-R002 - Reasoned cross-links
 - **O005-RSK002 - Dead-end on change**: O005-R003 - Referential integrity
+- **O005-RSK003 - Vocabulary mismatch**: O005-R004 - Question-based retrieval
 
 #### O006 - Portable reuse
 
@@ -206,3 +209,8 @@ Maximize the proportion of claims in the body of knowledge a consumer can rely o
 ### Product Decision Records
 
 - [PDR001 - Claim fidelity as a first-class outcome](drs/PDR001-claim-fidelity-outcome.md)
+- [PDR002 - Question-based retrieval as a first-class discovery path](drs/PDR002-question-based-retrieval.md)
+
+### Change Records
+
+- [CR009 - O005 question-based retrieval path](../crs/CR009-question-based-retrieval.md)

@@ -503,7 +503,6 @@ property of the design, not a hedge.)
 
 ## See Also
 
-- [CONTEXT.md](../../CONTEXT.md) — project glossary
 - Product Decision Records: [PDR001](drs/PDR001-claim-fidelity-outcome.md),
   [PDR002](drs/PDR002-consumer-downstream-anchor.md),
   [PDR003](drs/PDR003-manage-by-exception.md),

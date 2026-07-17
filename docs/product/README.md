@@ -301,7 +301,9 @@ of the *eyes* (reviewing every item).
 question — for a human *navigating* the corpus and for an agent *querying* it.
 **Proxy:** index coverage over all concepts, cross-link density with stated
 reasons, and absence of dangling links — exposed both as a rendered view and as
-machine-parseable structure.
+machine-parseable structure. Retrieval-by-question is heuristic (mapping a
+question to the relevant concepts can miss), so the metric stays *minimize the
+time to locate*, not a guarantee of a hit.
 
 **Risks**
 
@@ -314,6 +316,10 @@ machine-parseable structure.
 - **O005-RSK003** - Human-only affordance: Discovery aids exist only as
   human-rendered views, so an agent consumer cannot find or traverse the corpus
   programmatically.
+- **O005-RSK004** - Vocabulary mismatch: The consumer asks in different words
+  than the ones the relevant knowledge was titled and filed under, so a listing
+  and a cross-link graph do not help — the knowledge is present but unreachable
+  by scanning, and the consumer falls back to asking the person who holds it.
 
 **Requirements**
 
@@ -327,12 +333,19 @@ machine-parseable structure.
 - **O005-R003** - Referential integrity: The product must surface the inbound
   links to a concept before it is retired or relocated, so they can be resolved
   rather than left dangling.
+- **O005-R004** - Question-based retrieval: The product must let a consumer
+  retrieve the concepts relevant to a question posed in their own terms — not
+  only browse the listing or follow cross-links — so present knowledge is
+  findable without the consumer already knowing how it was named or filed. Kept
+  solution-free: the mechanism (keyword, semantic match, or an agent reasoning
+  over the corpus) is an engineering decision.
 
 **Risk-Requirement Map**
 
 - **O005-RSK001 - Flat sprawl**: O005-R001 - Navigable index, O005-R002 - Reasoned cross-links
 - **O005-RSK002 - Dead-end on change**: O005-R003 - Referential integrity
 - **O005-RSK003 - Human-only affordance**: O005-R001 - Navigable index, O005-R002 - Reasoned cross-links
+- **O005-RSK004 - Vocabulary mismatch**: O005-R004 - Question-based retrieval
 
 #### O006 - Portable reuse
 
@@ -500,10 +513,12 @@ property of the design, not a hedge.)
 - [PDR002 - Consumer job as a downstream anchor](drs/PDR002-consumer-downstream-anchor.md)
 - [PDR003 - Manage by exception via a delegation envelope](drs/PDR003-manage-by-exception.md)
 - [PDR004 - Charter required and foundational](drs/PDR004-charter-required-and-foundational.md)
+- [PDR005 - Question-based retrieval as a discovery path](drs/PDR005-question-based-retrieval.md)
 
 ## See Also
 
 - Product Decision Records: [PDR001](drs/PDR001-claim-fidelity-outcome.md),
   [PDR002](drs/PDR002-consumer-downstream-anchor.md),
   [PDR003](drs/PDR003-manage-by-exception.md),
-  [PDR004](drs/PDR004-charter-required-and-foundational.md)
+  [PDR004](drs/PDR004-charter-required-and-foundational.md),
+  [PDR005](drs/PDR005-question-based-retrieval.md)

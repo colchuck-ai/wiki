@@ -38,7 +38,7 @@ The name is **Curation Operations**, not the alignment review's "Curation Consol
 - The component set grows by one. C011 is deliberately thin (fan-out + three rules); the risk it reads as a shallow pass-through is accepted and bounded by keeping all detection in the faces and loading C011 only with cross-face behavior.
 - The architecture's "operations are skill-level" description is refined: Ingest remains a pipeline of components with trivial glue, while Survey and Lint are realized *by* an aggregator component (C011) — the standing-health counterpart to the Ingest pipeline. Query stays direct read (no aggregation, no component).
 - A new detect face now has a defined wire-in cost: add its routing-table row, a co-presentation rule if it can overlap an existing face, and a representation success criterion. This is a small, explicit tax that replaces silent omission.
-- C011 depends only on read-only freshness signals from C005/C007 for Lint and pins no mutation, so it composes cleanly with a future tightening of C005's freshness interface (the separately-tracked read-only-freshness concern) without a contract change here.
+- C011 depends only on read-only freshness signals from C005/C007 for Lint and pins no mutation, so it composes cleanly with a future tightening of C005's freshness interface (the separately-tracked read-only-freshness concern) without a contract change here. That concern is now resolved: `C005.index_status` and `C007.recency_status` supply the read-only interface, and C011's Lint reads them in place of any mutation ([CR010](../../crs/CR010-read-only-freshness-interface.md)) — exactly the clean compose this consequence anticipated.
 
 ## Affected elements
 

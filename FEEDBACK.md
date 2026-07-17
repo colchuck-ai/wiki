@@ -153,7 +153,24 @@ All problems below are semantic. `⚑` = independently raised by two lenses (hig
   contract section with success criteria.
 - **Type:** create (component) or update (README). `/codebase-design` candidate.
 
-### [ ] T2.3 — [Engineering] Lint "mutates nothing" but has no read-only freshness interface
+### [x] T2.3 — [Engineering] Lint "mutates nothing" but has no read-only freshness interface
+- **Done (2026-07-17, uncommitted):** Added two read-only dry-run interfaces — **`C005.index_status(scope?) →
+  stale_paths[]`** (paths whose on-disk `index.md` differs from a fresh regen; `reindex`'s derivation *minus
+  the write*, so one-owner-of-index holds) and **`C007.recency_status(scope?) → unrecorded_paths[]`** (a
+  scope-wide sweep of concepts with no recorded `timestamp`). Together they cover README:36's two stated
+  residual cases: "hand-edited outside the verbs" → `index_status`, "authored before the tooling" →
+  `recency_status`. Stated the **honest limit** that neither is designed to hide: a concept hand-edited on
+  disk *after* being recorded, changing neither its index entry nor a timestamp's presence (e.g. a body-only
+  edit), is undetectable by any read-only check — the irreducible cost of recording by intent (ADR011), not a
+  bug. Fixed the actual defect at README:36 (Lint's freshness check was specced as `C005.reindex` idempotence
+  — a *mutation* — which a read-only Lint could never run) and made every deferring reference concrete: C011's
+  `lint` interface / C004-C005 relationship / routing table / the note that pinned "no mutation" (it had
+  explicitly deferred the interface to C005/C007 — now supplied), plus C005's edge case + relationship +
+  success criteria + Notes and C007's edge case + Notes + success criteria. No new ADR: **ADR016:41** had
+  already recorded this as "the separately-tracked read-only-freshness concern" and anticipated "a future
+  tightening … without a contract change here" — added a forward pointer there to the resolution. No
+  requirement/risk/map-row change (interfaces on already-mapped components). Authored
+  `CR010-read-only-freshness-interface.md`. Linter clean (41 files, 0/0); binary checklist passed.
 - **Problem:** Lint's index-freshness check is specced as "`C005.reindex` idempotence,"
   but `reindex` is C005's only mutation (writes the fix when stale). Read-only Lint must
   either call `reindex` (violates "mutates nothing") or re-derive the index (violates

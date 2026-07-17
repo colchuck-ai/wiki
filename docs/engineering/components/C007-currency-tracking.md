@@ -19,6 +19,7 @@ C007 exposes an in-process face. `record` is its only corpus mutation; every oth
 - **`recency(concept_id) → timestamp | none`** — reads the concept's current `timestamp` via C004. `none` when the concept has never been through `record` (authored before C007 existed, or a writer that bypassed the contract).
 - **`history(concept_id) → log_entry[]`** — every entry recorded for one concept, newest first, computed by scanning every `log.md` under the bundle root (via C004) and filtering to entries naming that concept. Bundle-wide by construction, so it stays complete even after a `move` relocates the concept between directories ([ADR011](../drs/ADR011-concept-verb-surface.md), superseding the per-directory scoping ADR008 originally set for this call).
 - **`history_all(scope?) → log_entry[]`** — the aggregated, newest-first change history for `scope` (a directory) or, when omitted, the whole bundle. Computed on demand by scanning every `log.md` under `scope`; nothing is persisted for this view ([ADR008](../drs/ADR008-recency-materialization-and-log-scoping.md)).
+- **`recency_status(scope?) → unrecorded_paths[]`** — the read-only recency-freshness check: returns the concepts in `scope` (default: whole bundle) that carry **no recorded `timestamp` at all** — authored before C007 existed, or written by a path that bypassed the verb contract — computed by scanning the concepts in scope (via C004) and filtering to those missing the field. **Writes nothing.** This is the recency half of Lint's freshness check, read by C011 ([ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md), [CR010](../../crs/CR010-read-only-freshness-interface.md)). Its reach is deliberately narrow: it detects the *absence* of a recording, never a concept hand-edited on disk *after* it was recorded. C007 sets `timestamp` to the moment of the recording call, not a content-derived time (see the responsibility statement above), so it holds no ground truth against which a present-but-stale timestamp could be judged — that residual out-of-band edit is not detectable here, and only surfaces through C005's `index_status` when it also changed the index entry.
 
 ## Behavior
 
@@ -30,7 +31,7 @@ C007 exposes an in-process face. `record` is its only corpus mutation; every oth
 
 ## Edge cases
 
-- **Concept never recorded** (authored before C007 existed, or a writer bypassed the contract): `recency` returns `none`; `history` returns `[]` — not an error. The first `record` call establishes both.
+- **Concept never recorded** (authored before C007 existed, or a writer bypassed the contract): `recency` returns `none`; `history` returns `[]` — not an error. The first `record` call establishes both. A scope-wide sweep of these — the concepts with no recorded recency — is exactly what `recency_status` returns for Lint.
 - **Directory with no recorded changes**: no `log.md` exists; `history_all` scoped there returns `[]`.
 - **Merge (C003)**: the `revise` step records `Update` against the surviving target concept's directory; the `delete` step records `Retirement` against the folded-away concept. The absorbed concept's prior entries stay in their directory's `log.md` (append-only, never rewritten) and remain visible through `history` and `history_all`.
 - **Concept deleted (C008's `delete`)**: `record` is called with `kind = Retirement` against the deleted concept's *last* directory (its `log.md` still receives the entry even though the concept file is gone), naming it by title with no working link, since there is nothing left for a link to resolve to. Every referrer C008 repairs gets its own `Update` entry, recorded normally against its own (unaffected) directory.
@@ -52,7 +53,8 @@ C007 exposes an in-process face. `record` is its only corpus mutation; every oth
 - **Recency recorded**: after any `record` call, `recency(concept_id)` returns that call's timestamp — verifiable by recording and immediately reading it back.
 - **History completeness**: `history(concept_id)` returns exactly the entries recorded for that concept across the whole corpus, newest first — including entries from any directory it previously lived in — verifiable by recording an event, moving the concept, recording again, and confirming both appear in order.
 - **One write per event**: a single `record` call mutates exactly one concept's `timestamp` and appends to exactly one `log.md` — verifiable by diffing the corpus before and after and confirming no other file changed.
-- **No mutation on read**: `recency`, `history`, and `history_all` never write to the corpus.
+- **No mutation on read**: `recency`, `history`, `history_all`, and `recency_status` never write to the corpus.
+- **Read-only freshness sweep**: `recency_status(scope)` returns exactly the concepts in scope carrying no recorded `timestamp`, and writes nothing — verifiable by placing a concept on disk with no `timestamp`, confirming it appears, then recording it and confirming it drops out on the next call.
 - **Append-only log**: re-recording a concept never removes or edits a prior entry in its directory's `log.md` — verifiable by recording twice and confirming both entries persist.
 - **Idempotent absence**: a concept or directory with nothing ever recorded returns `none` / `[]` rather than an error.
 
@@ -61,7 +63,7 @@ C007 exposes an in-process face. `record` is its only corpus mutation; every oth
 - The closed change-kind vocabulary (`Creation` / `Update` / `Deprecation` / `Retirement`) is a Wiki convention layered on OKF §7's non-normative leading-bold-word convention — recorded here rather than in a separate ADR, the same treatment C004 gave the kebab-case slug convention; promote it if it becomes contested.
 - Materializing both artifacts, and scoping `log.md` per directory with no cascade — computing any wider view on demand instead — are captured with alternatives and consequences in [ADR008](../drs/ADR008-recency-materialization-and-log-scoping.md). Redefining `history(concept_id)` as a bundle-wide filtered scan (so it stays complete across a `move`) supersedes that ADR's per-directory scoping of this one call, and is captured in [ADR011](../drs/ADR011-concept-verb-surface.md).
 - `Retirement`'s link-less log entry and `delete`/`move`'s multi-`record` fan-out follow from [ADR009](../drs/ADR009-retirement-relocation-and-link-repair-model.md), which introduced real deletion and relocation as C008 operations; the `delete`/`move` names and the internal-effect framing follow [ADR011](../drs/ADR011-concept-verb-surface.md).
-- Currency tracking has no steward-facing operation of its own: C011 - Curation Operations reads `recency` / `history_all` as the staleness and recent-change face of its **Survey** aggregation and `recency` again as a freshness signal for **Lint** (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)), and `recency` is shown alongside any concept in Query.
+- Currency tracking has no steward-facing operation of its own: C011 - Curation Operations reads `recency` / `history_all` as the staleness and recent-change face of its **Survey** aggregation and `recency_status` as the read-only recency-freshness signal for **Lint** — the scope-wide sweep of concepts with no recorded recency (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md), [CR010](../../crs/CR010-read-only-freshness-interface.md)) — and `recency` is shown alongside any concept in Query.
 
 ## See Also
 
@@ -77,3 +79,4 @@ C007 exposes an in-process face. `record` is its only corpus mutation; every oth
 - [CR003 - Concept verb surface: create, revise, merge](../../crs/CR003-concept-verb-surface.md)
 - [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)
 - [CR008 - Survey/Lint aggregator trace: C011](../../crs/CR008-survey-lint-aggregator-trace.md)
+- [CR010 - Read-only freshness interface: index_status and recency_status](../../crs/CR010-read-only-freshness-interface.md)

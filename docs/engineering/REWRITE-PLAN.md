@@ -3,6 +3,15 @@
 > **Status: CONFIRMED (2026-07-17). Approach: full clean-room.**
 > This is a temporary working doc. Delete it when the rewrite completes
 > (Phase 5). It is not part of the intent tree.
+>
+> **Chunk A COMPLETE (2026-07-17): Phases 0–2 done.** Outputs committed:
+> `README.md` (architecture root), `DECOMPOSITION.md` (12 components + coverage
+> diff + conscious drops), `INTERFACES.md` (frozen contracts), `REQUIREMENT-MAP.md`
+> (full trace, no orphans), `drs/ADR001–005`, and `components/C001–C012` stubs
+> (frozen interface + Phase-3 seed). Old tree archived to
+> `archive/docs-v2/engineering/`. **Next: Chunks B…N = Phase 3** — fan out one
+> subagent per component to write its behavioral spec from the frozen Chunk-A
+> outputs.
 
 ## Why this exists
 
@@ -54,10 +63,10 @@ new product tree.
 ## Phases
 
 ### Phase 0 — Baseline
-- [ ] Archive the whole engineering tree → `archive/docs-v2/engineering/`
+- [x] Archive the whole engineering tree → `archive/docs-v2/engineering/`
       (README, components, ADRs, CRs)
-- [ ] Re-read the new product `README.md` + PDR001–005 as the trace target
-- [ ] Separate two things pulled from the old tree — do **not** conflate them:
+- [x] Re-read the new product `README.md` + PDR001–005 as the trace target
+- [x] Separate two things pulled from the old tree — do **not** conflate them:
   - **True invariants** (product-derived; must survive any decomposition): OKF is
     external / not Wiki's to define; plain-text + git substrate; and the product
     requirements themselves. Fixed constraints on the derivation.
@@ -67,26 +76,26 @@ new product tree.
     clean-room must *earn* these from the requirements, not assume them.
 
 ### Phase 1 — Architecture root + architectural decisions
-- [ ] Draft the new engineering `README.md`: the system's shape derived from the
+- [x] Draft the new engineering `README.md`: the system's shape derived from the
       new product tree (pipeline + standing capabilities, or whatever the
       clean-room derivation yields — do not presume the old shape).
-- [ ] Author an ADR **only** when a decision clears the bar: hard-to-reverse
+- [x] Author an ADR **only** when a decision clears the bar: hard-to-reverse
       **and** surprising-without-context **and** a real trade-off. No migrating
       old ADRs. Decisions the new product concepts are expected to force (write
       each only if it clears the bar):
-  - [ ] **Delegation envelope**: where it lives, who evaluates it, how escalation
+  - [x] **Delegation envelope**: where it lives, who evaluates it, how escalation
         surfaces to the steward.
-  - [ ] **Decision-provenance & review-tier representation**: OKF conventions /
+  - [x] **Decision-provenance & review-tier representation**: OKF conventions /
         frontmatter / log.
-  - [ ] **Held-aside storage model**: recoverable non-integrated material; audit
+  - [x] **Held-aside storage model**: recoverable non-integrated material; audit
         and reversal.
-  - [ ] **Citation two-reference model**: durable resolution target + live
+  - [x] **Citation two-reference model**: durable resolution target + live
         locator. **Supersedes CR001**, replaces ADR007.
-  - [ ] **Agent-queryable discovery / question-based-retrieval owner**
+  - [x] **Agent-queryable discovery / question-based-retrieval owner**
         (O005-R004; mechanism open).
-  - [ ] *(only if the derivation actually re-opens them)* OKF conformance
+  - [x] *(only if the derivation actually re-opens them)* OKF conformance
         boundary; storage substrate.
-- [ ] **End-of-Phase-1 checklist (not a work list):** walk old ADR001–ADR015 —
+- [x] **End-of-Phase-1 checklist (not a work list):** walk old ADR001–ADR015 —
       for each, did the clean-room face this decision? If yes, is it settled (in
       an ADR or a component)? If we didn't face it, why not? Catches any real
       decision that silently vanished.
@@ -94,21 +103,21 @@ new product tree.
 ### Phase 2 — Derive the component decomposition (blind-first, via `/codebase-design`)
 **Do not reopen the old component docs until step 5** — anchoring is the main
 failure mode, and blind-first ordering is what makes "component set is open" real.
-- [ ] 1. List every capability the requirements demand (from the frozen product
+- [x] 1. List every capability the requirements demand (from the frozen product
       tree only).
-- [ ] 2. Group capabilities by the **state/artifact each owns** (locality) — what
+- [x] 2. Group capabilities by the **state/artifact each owns** (locality) — what
       data does this cluster exclusively read and write?
-- [ ] 3. Cut **seams** where a small interface hides deep behavior (depth); aim
+- [x] 3. Cut **seams** where a small interface hides deep behavior (depth); aim
       for one owner per artifact, so "no shared mutable state" either falls out
       as absent or is flagged as a finding — not assumed.
-- [ ] 4. Cross-check completeness against the material **lifecycle** (intake →
+- [x] 4. Cross-check completeness against the material **lifecycle** (intake →
       triage → author → maintain → discover) — no stage orphaned.
-- [ ] 5. *Now* diff the derived set against old C001–C011 as a coverage
+- [x] 5. *Now* diff the derived set against old C001–C011 as a coverage
       checklist: every old capability lands somewhere new or is consciously
       dropped (`log` what's dropped and why).
-- [ ] 6. Produce the Requirement→Component map covering every product requirement
+- [x] 6. Produce the Requirement→Component map covering every product requirement
       (O001–O009, all R's incl. O005-R004), with no orphans in either direction.
-- [ ] 7. **Freeze each component's interface** (the small surface others call) —
+- [x] 7. **Freeze each component's interface** (the small surface others call) —
       this contract is what lets Phase 3 specs run in parallel without colliding.
       Chunk A is not done until interfaces are frozen and committed.
 

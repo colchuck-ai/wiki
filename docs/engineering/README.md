@@ -32,11 +32,11 @@ Wiki is organized as a **curation pipeline over a shared corpus**, surrounded by
 The curation Agent Skill exposes four steward-facing operations over the components below. Only **Ingest** and the remediation verbs write; **Survey** and **Lint** mutate nothing — they surface findings for the steward, who then directs a write verb to act (recommend-and-confirm; intent in, work out). **Query** is read-only consumption. The write verbs — `create`, `revise`, `move`, `delete`, `deprecate`, and the `merge` composition — live on C003 and C008, and each carries its own recency, history, index, and link-repair effects ([ADR011](drs/ADR011-concept-verb-surface.md)).
 
 - **Ingest** — build and integrate new material. C001 - Ingestion Queue records and durably holds a submission; C002 - Triage recommends a disposition and records the steward's decision; on admission C003 - Integration Authoring `create`s a new concept or `revise`s an existing one (and `merge`s two existing concepts when the steward is consolidating duplicates), checking each authored claim against its cited source and surfacing the distillation for the steward to confirm before the write commits (O009).
-- **Survey** — keep the corpus true, current, on-scope, and complete *over time* (substance and currency, needing the steward's judgment). A read-only aggregation of the components' detect faces: source drift (`C006.revalidate_all`), staleness and recent change (`C007.recency` / `history_all`), retirement candidates from staleness + drift + supersession (`C008.retirement_candidates`), scope drift (`C010.reconcile`), and coverage gaps (C009 - Coverage Review). Each finding routes to a write verb the steward directs — drift → `revise`; retirement candidate or out-of-scope → `delete` / `deprecate` / `move`; gap → `create` — none of which Survey performs itself.
-- **Lint** — check that the corpus is well-formed and internally consistent *right now* (form and consistency, mechanical and mostly objective). OKF structural conformance (`C004.validate`), referential integrity (`C005.dangling_links`), and index/recency freshness (`C005.reindex` idempotence, `C007.recency`). A finding is resolved by a `revise` or a mechanical re-render. Because materialization is a verb effect, index and recency can no longer drift from a forgotten call ([ADR011](drs/ADR011-concept-verb-surface.md)) — Lint's freshness check narrows to concepts authored before the tooling or hand-edited outside the verbs.
+- **Survey** — keep the corpus true, current, on-scope, and complete *over time* (substance and currency, needing the steward's judgment). A read-only aggregation, owned by C011 - Curation Operations, of the components' detect faces: source drift (`C006.revalidate_all`), staleness and recent change (`C007.recency` / `history_all`), retirement candidates from staleness + drift + supersession (`C008.retirement_candidates`), scope drift (`C010.reconcile`), and coverage gaps (C009 - Coverage Review). C011 rolls these up by concept — so a concept surfaced by several faces reads as one item, and a fact C008 already folded into a retirement candidate is not shown twice — and pairs contradictory guidance (a `thin` concept that is also a retirement candidate). Each finding routes to a write verb the steward directs — drift → `revise`; retirement candidate or out-of-scope → `delete` / `deprecate` / `move`; gap → `create` — none of which Survey performs itself.
+- **Lint** — check that the corpus is well-formed and internally consistent *right now* (form and consistency, mechanical and mostly objective). A read-only aggregation, owned by C011 - Curation Operations, of OKF structural conformance (`C004.validate`), referential integrity (`C005.dangling_links`), and index/recency freshness (`C005.reindex` idempotence, `C007.recency`). A finding is resolved by a `revise` or a mechanical re-render. Because materialization is a verb effect, index and recency can no longer drift from a forgotten call ([ADR011](drs/ADR011-concept-verb-surface.md)) — Lint's freshness check narrows to concepts authored before the tooling or hand-edited outside the verbs.
 - **Query** — consume the corpus. Reading a concept or the index is direct file access (the plain-text concepts and the materialized `index.md`); a concept's per-claim grounding signals (O009-R002) are read inline with its content, so a consumer can tell a source-backed claim from one that needs checking. The reads that compute — `C005.graph` / `inbound_links`, `C007.history` — are available for traversal. Query performs no curation write and needs no dedicated verb.
 
-Survey and Lint have no owning component: each is a skill-level aggregation of the detect faces named above, distinct from Ingest, which runs the C001 → C002 → C003 pipeline. The dividing line between them is *substance over time* (Survey) versus *form right now* (Lint).
+Survey and Lint are owned by **C011 - Curation Operations**, the read-only aggregator that fans out to the detect faces named above, rolls their findings up by concept, pairs contradictory guidance, and routes each to a remediation verb the steward directs — the standing-health counterpart to the C001 → C002 → C003 Ingest pipeline. C011 adds only the cross-face composition; each face keeps its own judgment, and Query stays direct file read (no aggregation, no component). The dividing line between the two operations is *substance over time* (Survey) versus *form right now* (Lint) ([ADR016](drs/ADR016-survey-lint-aggregation-ownership.md)).
 
 ## Components
 
@@ -100,6 +100,12 @@ Holds the steward's declaration of the corpus's purpose and scope as an optional
 
 See [C010 - Charter](components/C010-charter.md).
 
+### C011 - Curation Operations
+
+Realizes the Survey and Lint operations by aggregating the detect faces into one deduplicated, conflict-aware findings view and routing each finding to the remediation verb the steward directs; the read-only, standing-health counterpart to the Ingest pipeline. Owns no detection and writes nothing.
+
+See [C011 - Curation Operations](components/C011-curation-operations.md).
+
 ## Requirement-Component Map
 
 - **O001-R001 - Cited claims**: C003 - Integration Authoring
@@ -113,7 +119,7 @@ See [C010 - Charter](components/C010-charter.md).
 - **O003-R004 - Significance bar**: C002 - Triage
 - **O004-R001 - Intent-driven authoring**: C003 - Integration Authoring
 - **O004-R002 - Convention encapsulation**: C004 - OKF Conformance
-- **O004-R003 - Assisted upkeep**: C003 - Integration Authoring, C006 - Source Revalidation, C007 - Currency Tracking, C008 - Lifecycle & Retirement, C009 - Coverage Review, C010 - Charter
+- **O004-R003 - Assisted upkeep**: C003 - Integration Authoring, C006 - Source Revalidation, C007 - Currency Tracking, C008 - Lifecycle & Retirement, C009 - Coverage Review, C010 - Charter, C011 - Curation Operations
 - **O005-R001 - Navigable index**: C005 - Index & Navigation
 - **O005-R002 - Reasoned cross-links**: C003 - Integration Authoring, C005 - Index & Navigation
 - **O005-R003 - Referential integrity**: C005 - Index & Navigation
@@ -148,6 +154,7 @@ See [C010 - Charter](components/C010-charter.md).
 - [ADR013 - Coverage review signal model and scope-anchored gap suppression](drs/ADR013-coverage-review-signal-model.md)
 - [ADR014 - Merge composition integrity](drs/ADR014-merge-composition-integrity.md)
 - [ADR015 - Claim grounding seam](drs/ADR015-claim-grounding-seam.md)
+- [ADR016 - Survey/Lint aggregation ownership](drs/ADR016-survey-lint-aggregation-ownership.md)
 
 ### Change Records
 
@@ -155,3 +162,4 @@ See [C010 - Charter](components/C010-charter.md).
 - [CR005 - Merge composition integrity: content_preserved and atomicity](../crs/CR005-merge-composition-integrity.md)
 - [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../crs/CR006-assisted-upkeep-traceability.md)
 - [CR007 - Claim grounding trace: O009 requirements to C003](../crs/CR007-claim-grounding-trace.md)
+- [CR008 - Survey/Lint aggregator trace: C011](../crs/CR008-survey-lint-aggregator-trace.md)

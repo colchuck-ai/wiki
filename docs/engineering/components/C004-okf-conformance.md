@@ -82,7 +82,7 @@ C004 exposes two in-process faces. Both are pure of corpus side effects except w
 
 - Pinned to OKF 0.1 at [`vendor/okf/SPEC.md`](../../../vendor/okf/SPEC.md); the pin (upstream commit, hashes, vendored date) is recorded in [`vendor/okf/PROVENANCE.md`](../../../vendor/okf/PROVENANCE.md). Do not edit the vendored spec; re-vendor to change the pin.
 - The lowercase-kebab-case slug convention is a **Wiki choice**, not an OKF rule (OKF §3 leaves naming to producers). It is recorded here rather than in a separate decision record; promote it to an ADR if it becomes contested.
-- The product's **Lint** operation (engineering README, Technology Choices) is this validator surfaced through the curation Agent Skill.
+- The product's **Lint** operation is owned by C011 - Curation Operations, which reads `validate` as Lint's structural-conformance face and aggregates it with C005's referential-integrity and index/recency freshness faces (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)). C011 carries the severity classification through unchanged and reads corpus content only through C004, so it holds no OKF structural literal.
 
 ## See Also
 
@@ -94,3 +94,4 @@ C004 exposes two in-process faces. Both are pure of corpus side effects except w
 ### Change Records
 
 - [CR007 - Claim grounding trace: O009 requirements to C003](../../crs/CR007-claim-grounding-trace.md)
+- [CR008 - Survey/Lint aggregator trace: C011](../../crs/CR008-survey-lint-aggregator-trace.md)

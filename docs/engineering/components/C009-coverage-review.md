@@ -53,7 +53,8 @@ C009 exposes an in-process face. Every corpus read goes through C004; the corpus
 - **C003 - Integration Authoring**: the write verbs every confirmed gap routes to — `create` for an `absent` area, `revise` to deepen a `thin` one. C009 recommends; C003 authors. The routing is the steward's directed action through Survey, not a runtime call from C009 into C003 (recommend-and-confirm; intent in, work out).
 - **C004 - OKF Conformance**: sole path to corpus content for the agent scan — parsing concepts and frontmatter through C004's helpers. C009 encodes no OKF structural literal.
 - **C002 - Triage**: no relationship — C002 judges the significance and scope of *incoming* material at intake; C009 judges the *completeness* of the standing corpus. Distinct passes over distinct material, the same boundary C008 draws with C002.
-- **C006 / C007 / C008**: co-detect faces the **Survey** operation aggregates alongside C009; C009 calls none of them and shares no state. C009's `thin` judgment is independent of C008's retirement candidacy (see Edge cases).
+- **C006 / C007 / C008**: co-detect faces C011 - Curation Operations aggregates alongside C009 behind the **Survey** operation; C009 calls none of them and shares no state. C009's `thin` judgment is independent of C008's retirement candidacy (see Edge cases); when both name one concept, C011 co-presents them as the expand-vs-retire choice C009 leaves to the steward, suppressing neither ([ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)).
+- **C011 - Curation Operations**: reads `coverage_review` as the coverage-gap face of its Survey aggregation and routes each finding to `create` (absent) or `revise` (thin); C011 aggregates and routes, C009 judges. No reverse dependency — C009 is unaware it is aggregated.
 - **Boundary**: C009 owns aggregating gap signals into a sourcing agenda and judging which represent real in-scope gaps. It does not author or deepen concepts (C003), declare or reconcile scope (C010), define the OKF format (C004), or judge material at intake or removal (C002, C008). It writes nothing to the corpus and keeps no persisted state.
 
 ## Success criteria
@@ -69,7 +70,7 @@ C009 exposes an in-process face. Every corpus read goes through C004; the corpus
 
 ## Notes
 
-- Coverage review is surfaced through the product's **Survey** operation, alongside `C006.revalidate_all`, `C007.recency` / `history_all`, `C008.retirement_candidates`, and `C010.reconcile`.
+- Coverage review is surfaced through the product's **Survey** operation, which C011 - Curation Operations owns — C011 aggregates `coverage_review` alongside `C006.revalidate_all`, `C007.recency` / `history_all`, `C008.retirement_candidates`, and `C010.reconcile` (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)).
 - The three-signal aggregation model, the no-charter degradation, and the scope-anchored suppression (no C009-owned dismissal store) are captured — with their rejected alternatives — in [ADR013](../drs/ADR013-coverage-review-signal-model.md). The `thin`-or-`absent` scope follows O007-R002's wording directly and needs no separate decision.
 - The self-contained agent scan follows the same self-contained precedent [ADR004](../drs/ADR004-triage-disposition-model.md) and [ADR005](../drs/ADR005-integration-authoring-provenance-and-merge.md) set for C002 and C003.
 
@@ -83,3 +84,4 @@ C009 exposes an in-process face. Every corpus read goes through C004; the corpus
 ### Change Records
 
 - [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)
+- [CR008 - Survey/Lint aggregator trace: C011](../../crs/CR008-survey-lint-aggregator-trace.md)

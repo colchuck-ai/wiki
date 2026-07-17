@@ -61,7 +61,7 @@ C007 exposes an in-process face. `record` is its only corpus mutation; every oth
 - The closed change-kind vocabulary (`Creation` / `Update` / `Deprecation` / `Retirement`) is a Wiki convention layered on OKF §7's non-normative leading-bold-word convention — recorded here rather than in a separate ADR, the same treatment C004 gave the kebab-case slug convention; promote it if it becomes contested.
 - Materializing both artifacts, and scoping `log.md` per directory with no cascade — computing any wider view on demand instead — are captured with alternatives and consequences in [ADR008](../drs/ADR008-recency-materialization-and-log-scoping.md). Redefining `history(concept_id)` as a bundle-wide filtered scan (so it stays complete across a `move`) supersedes that ADR's per-directory scoping of this one call, and is captured in [ADR011](../drs/ADR011-concept-verb-surface.md).
 - `Retirement`'s link-less log entry and `delete`/`move`'s multi-`record` fan-out follow from [ADR009](../drs/ADR009-retirement-relocation-and-link-repair-model.md), which introduced real deletion and relocation as C008 operations; the `delete`/`move` names and the internal-effect framing follow [ADR011](../drs/ADR011-concept-verb-surface.md).
-- Currency tracking has no steward-facing operation of its own: `history_all` backs a Survey-style view of what changed recently, and `recency` is shown alongside any concept in Query.
+- Currency tracking has no steward-facing operation of its own: C011 - Curation Operations reads `recency` / `history_all` as the staleness and recent-change face of its **Survey** aggregation and `recency` again as a freshness signal for **Lint** (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)), and `recency` is shown alongside any concept in Query.
 
 ## See Also
 
@@ -76,3 +76,4 @@ C007 exposes an in-process face. `record` is its only corpus mutation; every oth
 
 - [CR003 - Concept verb surface: create, revise, merge](../../crs/CR003-concept-verb-surface.md)
 - [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)
+- [CR008 - Survey/Lint aggregator trace: C011](../../crs/CR008-survey-lint-aggregator-trace.md)

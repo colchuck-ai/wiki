@@ -76,7 +76,7 @@ C008 exposes an in-process face. Every corpus read and write goes through C004. 
 
 - The deprecation marker (`deprecated: true` plus a `# Deprecation` body section) is a Wiki convention recorded here rather than a separate ADR, the same treatment C007 gave its log-kind vocabulary — promote it if it becomes contested.
 - The original retirement/relocation/link-repair model — steward's free choice of mechanism and mechanical-repair-plus-review-candidates for deletion — is captured in [ADR009](../drs/ADR009-retirement-relocation-and-link-repair-model.md); the unified repair-to-successor rule, `delete`'s optional replacement, and the review-candidate narrowing that support `merge` are captured in [ADR012](../drs/ADR012-repair-to-successor-link-model.md). The `retire`→`delete` and `relocate`→`move` renames follow the verb surface in [ADR011](../drs/ADR011-concept-verb-surface.md).
-- Retirement review is surfaced through the product's **Survey** operation, alongside C006's `revalidate_all` and C010's `reconcile`.
+- Retirement review is surfaced through the product's **Survey** operation, which C011 - Curation Operations owns: C011 reads `retirement_candidates` as one Survey face alongside C006's `revalidate_all` and C010's `reconcile`, de-duplicates the drift and staleness facts a candidate already folds in, and pairs a candidate against a C009 `thin` finding on the same concept as an explicit expand-vs-retire choice (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)).
 - The `content_preserved` parameter on `delete` and the one-commit-or-none atomicity of the `merge` composition are captured with alternatives in [ADR014](../drs/ADR014-merge-composition-integrity.md) and [CR005](../../crs/CR005-merge-composition-integrity.md); they make review-candidate suppression a truthful argument rather than a merge-only branch, and close the partial-`merge` duplicate window.
 
 ## See Also
@@ -93,3 +93,4 @@ C008 exposes an in-process face. Every corpus read and write goes through C004. 
 - [CR004 - Delete, move, and the repair-to-successor link model](../../crs/CR004-delete-move-repair-to-successor.md)
 - [CR005 - Merge composition integrity: content_preserved and atomicity](../../crs/CR005-merge-composition-integrity.md)
 - [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)
+- [CR008 - Survey/Lint aggregator trace: C011](../../crs/CR008-survey-lint-aggregator-trace.md)

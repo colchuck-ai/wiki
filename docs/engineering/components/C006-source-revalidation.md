@@ -63,7 +63,7 @@ C006 exposes an in-process face plus one live network read. Every corpus read go
 
 - The git-history baseline for in-place citations (reading the cited path's content as of the concept's earliest commit, rather than a stored hash) is a C006-internal implementation choice — it needs no format change to C003 or C004, so it is recorded here rather than in a separate ADR. Its known imprecision (a citation swapped in after the concept's first commit anchors to an older baseline than the claim it backs) is acceptable in the low-volume, single-steward envelope; tightening it to per-citation-edit granularity is a future optimization, not a requirement this component makes today.
 - The captured-snapshot citation link form C006 depends on — the live `origin` URL as the primary citation link, with the archived asset as fallback — was settled specifically to give C006 a self-contained contract; see [ADR007](../drs/ADR007-citation-link-form-for-drift-revalidation.md) and [CR001](../../crs/CR001-external-citations-cite-live-origin.md).
-- Revalidation is surfaced through the product's **Survey** operation (engineering README, Technology Choices): the tool runs `revalidate_all` and presents drift findings for the steward's judgment.
+- Revalidation is surfaced through the product's **Survey** operation, which C011 - Curation Operations owns: C011 runs `revalidate_all` as one Survey detect face, rolls its drift findings up with the other faces' (so a drifted concept that is also a retirement candidate reads as one item), and presents them for the steward's judgment (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)).
 
 ## See Also
 
@@ -75,3 +75,4 @@ C006 exposes an in-process face plus one live network read. Every corpus read go
 
 - [CR001 - External citations cite the live origin](../../crs/CR001-external-citations-cite-live-origin.md)
 - [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)
+- [CR008 - Survey/Lint aggregator trace: C011](../../crs/CR008-survey-lint-aggregator-trace.md)

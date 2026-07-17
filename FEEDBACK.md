@@ -109,7 +109,23 @@ All problems below are semantic. `⚑` = independently raised by two lenses (hig
   truncation consequence.
 - **Type:** update (records). Coherence fix.
 
-### [ ] T2.2 — [Engineering] Survey & Lint have no owning component — will rot
+### [x] T2.2 — [Engineering] Survey & Lint have no owning component — will rot
+- **Done (2026-07-17, uncommitted):** Design-first via `/codebase-design`, then authored through `/intent`.
+  Chose a thin aggregator **component** over a composition-contract section (and over fold-into-skill /
+  extend-a-face), because the two cross-face rules are genuine behavior no single face can own and a
+  component gives them a test surface + a forcing function. Created **C011 - Curation Operations**
+  (`survey`/`lint`, read-only), owning exactly three things: the face→verb **routing table**, the subject
+  **rollup rule** (one item per concept; a drift/staleness fact C008 already folded into a retirement
+  candidate is not re-emitted raw; routes unioned), and the **conflict-pairing rule** (a `thin`-and-retirement
+  concept is one item with `conflict` set and both routes). C011 detects nothing and holds no OKF literal
+  (reads only through the faces), so ADR001 stays clean. Mapped C011 to **O004-R003** (the surfacing half),
+  reciprocally. Authored `ADR016-survey-lint-aggregation-ownership.md` (component vs contract vs fold vs
+  extend-a-face) and `CR008-survey-lint-aggregator-trace.md`; rewrote the README Operations section (the
+  "no owning component" sentence is gone), added C011 to the Components list + the O004-R003 map row + See
+  Also; named C011 as the aggregator in all seven faces (C004–C010) + added CR008 backlinks; and fixed a
+  name collision (ADR015's rejected hypothetical "C011 - Claim Grounding" → unnumbered, since C011 is now
+  taken). Linter clean (38 files, 0/0); binary checklist passed. Chosen name "Curation Operations" over the
+  finding's "Curation Console" (no interactive surface).
 - **Problem:** Aggregation is non-trivial (drift surfaced twice: raw `C006.revalidate_all`
   + folded into `C008.retirement_candidates`; staleness likewise; C009 names a
   "thin *and* retirement-candidate → opposite guidance" conflict owned by nobody). Ingest

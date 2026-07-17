@@ -48,6 +48,7 @@ C005 exposes an in-process face. `reindex` is the only corpus mutation; every ot
 - **C004 - OKF Conformance**: C005's sole path to corpus content — the index-rendering helper (OKF §6) to serialize `index.md`, the parse helper to read concept frontmatter (for descriptions) and body links (for the graph), and the link-syntax helper to recognize a bundle-relative link. C005 owns index maintenance and link-integrity semantics; C004 owns the surrounding format and validates only `index.md`'s structural shape.
 - **C008 - Lifecycle & Retirement**: the one component with a real dependency on C005 (see [ADR006](../drs/ADR006-index-materialization-and-graph-computation.md)). C008 calls `inbound_links` before completing a `delete` or `move`, to know exactly which referring concepts to mechanically repair, and fires `reindex` as an internal effect of every operation — after a `deprecate` (marker changed), a `delete` (concept removed), or a `move` (path and referring links changed).
 - **C009 - Coverage Review**: consumes `dangling_links` as one input to its sourcing agenda, alongside the charter's declared scope and agent-proposed gaps.
+- **C011 - Curation Operations**: reads `dangling_links` as the referential-integrity face of its **Lint** aggregation, and reads only the read-only index/recency freshness signal for Lint's freshness check — never `reindex`, so a Lint pass mutates nothing (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)). No reverse dependency; C005 is unaware it is aggregated.
 - **C010 - Charter**: the charter concept is indexed and graphed like any concept; C005 may present it under a distinct heading, but C010 imposes no exclusion requirement on C005 the way it does on C008 and C009.
 - **C002 - Triage / C001 - Ingestion Queue**: no relationship. Both stay self-contained (ADR004, ADR005); C005 is not on the intake or triage path.
 - **Boundary**: C005 owns index generation and cross-link graph computation, including inbound- and dangling-link reporting. It does not author concepts or links (C003), decide what to retire (C008), judge scope or gaps (C009, C010), or define OKF structure (C004). It writes only `index.md`; it never repairs a link.
@@ -80,3 +81,4 @@ C005 exposes an in-process face. `reindex` is the only corpus mutation; every ot
 ### Change Records
 
 - [CR003 - Concept verb surface: create, revise, merge](../../crs/CR003-concept-verb-surface.md)
+- [CR008 - Survey/Lint aggregator trace: C011](../../crs/CR008-survey-lint-aggregator-trace.md)

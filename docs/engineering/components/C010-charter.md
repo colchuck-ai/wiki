@@ -66,7 +66,7 @@ C010 exposes an in-process face. Reads and writes of the charter concept go thro
 ## Notes
 
 - `type: charter` is a C010 semantic convention; C004 neither registers nor constrains `type` values (consistent with C004's data model) and tolerates it as any unknown type.
-- Reconciliation is a whole-corpus agent pass; its cost scales with corpus size, acceptable in the low-volume, single-steward envelope. It is surfaced through the product's **Survey** operation, while charter declaration and revision are direct steward operations through the curation Agent Skill.
+- Reconciliation is a whole-corpus agent pass; its cost scales with corpus size, acceptable in the low-volume, single-steward envelope. It is surfaced through the product's **Survey** operation, which C011 - Curation Operations owns — C011 reads `reconcile` as the scope-drift face of its Survey aggregation and routes each out-of-scope finding to `deprecate` / `delete` / `move` or a `revise_charter` (see [ADR016](../drs/ADR016-survey-lint-aggregation-ownership.md)) — while charter declaration and revision are direct steward operations through the curation Agent Skill.
 - The storage form (`type: charter` in-corpus concept), the single-authority-at-two-timings design, and the detect-don't-repair posture are captured in [ADR003](../drs/ADR003-charter-as-in-corpus-concept.md).
 
 ## See Also
@@ -79,3 +79,4 @@ C010 exposes an in-process face. Reads and writes of the charter concept go thro
 ### Change Records
 
 - [CR006 - Assisted-upkeep traceability: C003 and reciprocal claims](../../crs/CR006-assisted-upkeep-traceability.md)
+- [CR008 - Survey/Lint aggregator trace: C011](../../crs/CR008-survey-lint-aggregator-trace.md)

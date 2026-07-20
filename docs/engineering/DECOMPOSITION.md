@@ -56,7 +56,10 @@ Referenced by [INTERFACES.md](INTERFACES.md). Kept deliberately small.
 | `ConceptId` | a concept's stable identity |
 
 `actor ∈ { wiki_auto, steward }`; `outcome ∈ { integrated, held_aside, merged,
-deprecated, superseded, relocated, flagged }`.
+deprecated, superseded, relocated, flagged, declared, revised }`. The last two are
+**policy-anchor** outcomes — the declaration/revision of the charter (C001) and the
+envelope (C002) — so policy-anchor changes record through the one provenance log rather
+than a separate history surface.
 
 ## The components
 
@@ -91,8 +94,8 @@ Phase 3 (`components/C0xx-*.md`, not yet written); this is the seed.
 - **Owns:** durable source snapshots + distinct live-origin locators; drift computation.
 - **Deep:** hides "how sources are held durably" and how live-vs-snapshot drift is
   detected behind `retain`/`resolve`/`check_drift`. One substrate for O001 + O009.
-- **Driven by:** C008 (retain at authoring time — *not* intake), C005 (drift refresh),
-  C011. **Owns reqs:** O001-R002, O001-R003. See [ADR003](drs/ADR003-citation-two-reference-model.md).
+- **Driven by:** C008 (retain at authoring time — *not* intake), C005 (drift refresh).
+  **Owns reqs:** O001-R002, O001-R003. See [ADR003](drs/ADR003-citation-two-reference-model.md).
 
 ### C005 — Currency & Provenance
 - **Owns:** the append-only decision-provenance log (plain-text, in-corpus, scoped —

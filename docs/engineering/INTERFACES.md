@@ -66,7 +66,7 @@ Stateless (owns no persistent artifact) — deep by behavior, not by data.
 |---|---|
 | `retain(source) -> Citation` | `Citation = { durable_ref, live_locator? }`. Captures a version-controlled durable snapshot and records the distinct live-origin locator when one exists. **Idempotent** per source. Captured at **authoring time** (first citation), called by C008 — *not* at intake (ADR003), so C004 is entirely corpus-side and C006 never calls it. |
 | `resolve(durable_ref) -> SourceContent` | Fetch the durable snapshot — what grounding (C008) and drift check against. Never returns the live origin. |
-| `check_drift(Citation) -> DriftStatus` | `unchanged \| drifted \| unreachable`. Compares `live_locator` against `durable_ref`. Called by the currency refresh (C005) and C011. |
+| `check_drift(Citation) -> DriftStatus` | `unchanged \| drifted \| unreachable`. Compares `live_locator` against `durable_ref`. Called by the currency refresh (C005); its result reaches C011 through `C005.currency`, not by C011 calling C004 directly. |
 
 **Invariants.** `durable_ref` is the resolution target and is **never** substituted by
 `live_locator` (ADR003). One substrate serves both provenance (O001) and fidelity
@@ -199,7 +199,7 @@ the corpus itself.
 C001 Charter  ◀── C002, C007, C008, C011, C012        (foundation; depends on nothing)
 C002 Governance ◀── C007, C008, C011, C012            (reads C001)
 C003 OKF Conformance ◀── C008, C009, C012             (stateless)
-C004 Source Retention ◀── C008, C005, C011            (stateless-ish source store)
+C004 Source Retention ◀── C008, C005                  (stateless-ish source store)
 C005 Currency&Provenance ◀── all mutators             (reads C004)
 C006 Intake&Held-Aside ◀── C007, C012
 C007 Triage → C001, C002, C006, C008, C009

@@ -121,18 +121,42 @@ failure mode, and blind-first ordering is what makes "component set is open" rea
       this contract is what lets Phase 3 specs run in parallel without colliding.
       Chunk A is not done until interfaces are frozen and committed.
 
-### Phase 3 — Component specs (parallel fan-out)
+### Phase 3 — Component specs (parallel fan-out)  ✅ COMPLETE (2026-07-18)
 Enabled by Chunk A freezing the interfaces. One subagent per component; each is
 given the frozen decomposition, its component's interface, and the requirements
 mapped to it.
-- [ ] Fan out one subagent per component in the derived set (independent, since
-      interfaces are frozen).
-- [ ] Each spec covers: capabilities, data model, behavior (envelope verbs where
+- [x] Fan out one subagent per component in the derived set (independent, since
+      interfaces are frozen). All 12 specs (C001–C012) written into
+      `components/C0xx-*.md`; stubs replaced.
+- [x] Each spec covers: capabilities, data model, behavior (envelope verbs where
       applicable), relationships, and success criteria aligned to the product
       **proxy metrics**.
-- [ ] **Reconciliation pass** after fan-out: verify the specs agree at every
-      shared interface (a subagent may interpret a contract slightly
-      differently) and that no component reached outside its frozen interface.
+- [x] **Reconciliation pass** after fan-out: all 12 agree at every shared
+      interface; no component reached outside its frozen surface; all settled
+      decisions held; the dropped aggregator was not re-imported. One spec-level
+      contradiction fixed (C001 wrongly claimed C008 reads it directly — C008
+      gets charter via `C002.evaluate`).
+
+**Two interface/shared-type forks surfaced in reconciliation and ratified by the
+steward (2026-07-18) — applied to the frozen docs + affected specs:**
+- **Policy-anchor provenance:** `Disposition.outcome` gained `declared` / `revised`
+  so charter (C001) and envelope (C002) changes record through the one provenance
+  log (C005) rather than a separate history surface. (Was: enum had no value for a
+  policy-anchor declare/revise.)
+- **Drift path (C005-sweep ratified):** C011 is no longer a direct caller of
+  `C004.check_drift` / `resolve`; C005 owns the periodic drift sweep and C011 reads
+  drift via `C005.currency`. Removed C011 from C004's caller list + inbound arrow.
+
+**Cosmetic frozen-doc inconsistencies left for Phase 4/5 (do not affect spec
+correctness):**
+- (B) `supersede` still listed as a distinct C008 verb in `DECOMPOSITION.md:123`
+  and `ADR001:28`; the frozen `INTERFACES § C008` correctly folds it into
+  `deprecate(…, successor?)`. Drop from those two prose lists.
+- (C) `INTERFACES` dependency-block still shows `C001 ◀── … C008`; C008 takes no
+  direct C001 dependency. Drop C008 from C001's inbound arrow.
+- (D) C003's `validate` and C005's `record` caller lists name C012 as a direct
+  caller it never exercises (it goes via `C009.dangling` / `C008.flag` /
+  `C002.escalate`). Note as indirect or drop C012.
 
 ### Phase 4 — CR cleanup
 - [ ] Fold any still-relevant CR content into the new components/ADRs

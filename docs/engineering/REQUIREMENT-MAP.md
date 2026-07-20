@@ -40,7 +40,7 @@ it calls to fulfill it (via the [frozen interfaces](INTERFACES.md)).
 | **O008-R003** Scope reconciliation | C012 Coverage & Scope Review | C001, C008 (`flag`), C002 (escalate) |
 | **O009-R001** Source-grounded authoring | C008 Integration (grounding seam) | C004 (resolve), C002 (admit/hold/escalate) |
 | **O009-R002** Legible grounding + review tier | C008 Integration (per-claim stamp) | — · ADR004 |
-| **O009-R003** Distillation review | C008 (escalate claim + source span) | C002 Governance (attention surface) |
+| **O009-R003** Distillation review | C008 (escalate claim + source span) + C002 (review surface) — *shared, see notes* | — |
 
 ## Foundational concepts → owners
 
@@ -65,7 +65,7 @@ Every component owns at least one requirement — no shallow/pass-through compon
 | C005 Currency & Provenance | O002-R001, O002-R002 |
 | C006 Intake & Held-Aside | O007-R001, O007-R003 |
 | C007 Triage | O003-R003, O003-R004, O008-R002 |
-| C008 Integration | O001-R001, O003-R001, O004-R001, O005-R002 (write), O006-R001/R003, O009-R001/R002 |
+| C008 Integration | O001-R001, O003-R001, O004-R001, O005-R002 (write), O006-R001/R003, O009-R001/R002, O009-R003 (escalate half) |
 | C009 Discovery & Index | O005-R001, O005-R002, O005-R003 |
 | C010 Question Retrieval | O005-R004 |
 | C011 Lifecycle & Retirement | O003-R002, O004-R003, O005-R003 (repair) |
@@ -76,6 +76,11 @@ Every component owns at least one requirement — no shallow/pass-through compon
 - **O004-R003** is genuinely shared: C011 and C012 *surface* what needs attention;
   C008 *carries out* the change by intent. The requirement's two halves ("surface" +
   "carry out") land in different owners on purpose — that split is the architecture.
+- **O009-R003** is genuinely shared the same way: C008 runs the author-time grounding
+  check and *escalates* each unsupported claim with the span of the source it was drawn
+  from; C002 owns the *review surface* on which the steward confirms it before
+  integration. The "escalate the claim+span" half is C008's; the "present it for review"
+  half is C002's — both own their half, so the requirement appears under both.
 - **O005-R002** and **O005-R003** name C009 as owner of the *graph/queries* but C008
   as the writer of the underlying links — consistent with the sole-writer rule (ADR001).
 - **O006-R001/R003** are substrate invariants enforced at the single write path (C008)

@@ -23,7 +23,8 @@ Types in `CamelCase` are shared vocabulary defined in
 | `declare(Charter)` / `revise(CharterPatch)` | Steward-facing. Writes the charter in-corpus, revisable-in-place. Reports provenance to `C005.record`. |
 
 **Invariants.** Required (always readable). Consumer-legible. Read by C002, C007,
-C008, C011, C012. C001 depends on **nothing** below it.
+C012. Neither C008 nor C011 reads C001 directly — charter influence reaches
+authoring and retirement through `C002.evaluate`. C001 depends on **nothing** below it.
 
 ---
 
@@ -51,7 +52,7 @@ are two internal seams behind this one interface.*
 | Call | Contract |
 |---|---|
 | `apply(content, kind) -> ConformantContent` | Normalize to the external format's structural + naming conventions. Called by **C008 only** (the sole writer). |
-| `validate(target) -> ConformanceReport` | `ok \| [violation]` against the **pinned** spec. Called by C008 (pre-write) and by C009/C012 (audit). |
+| `validate(target) -> ConformanceReport` | `ok \| [violation]` against the **pinned** spec. Called by C008 (pre-write) and by C009 (audit). |
 | `spec_version() -> Version` | The pinned external-format version. |
 
 **Invariants.** The **only** component that embeds format rules. Wiki *consumes* the
@@ -78,7 +79,7 @@ Stateless (owns no persistent artifact) — deep by behavior, not by data.
 
 | Call | Contract |
 |---|---|
-| `record(Disposition)` | **Append-only.** `Disposition = { target, outcome, actor, envelope_version, time, detail }`. The **single write path** to the provenance log. Called by C008 on every mutation and by C007/C011/C012/C001/C002 on any recordable action. |
+| `record(Disposition)` | **Append-only.** `Disposition = { target, outcome, actor, envelope_version, time, detail }`. The **single write path** to the provenance log. Called by C008 on every mutation and by C006 (hold-aside/restore), C011, C001, C002 on any recordable action. Pure decision modules (C007, C012) do **not** call `record` — each of their outcomes is recorded by the component that executes it. |
 | `history(target) -> [ProvenanceEntry]` | Dated change history incl. decision-provenance (O002-R002). |
 | `recency(concept) -> Recency` | Last meaningful change (O002-R001), derived from the log + C008's in-file stamp. |
 | `currency(concept) -> CurrencyStatus` | `{ recency, drift_status }` — the O002 proxy picture. `drift_status` materialized from `C004.check_drift`. |
@@ -196,15 +197,15 @@ the corpus itself.
 ## Dependency direction (no cycles)
 
 ```
-C001 Charter  ◀── C002, C007, C008, C011, C012        (foundation; depends on nothing)
+C001 Charter  ◀── C002, C007, C012                    (foundation; depends on nothing)
 C002 Governance ◀── C007, C008, C011, C012            (reads C001)
-C003 OKF Conformance ◀── C008, C009, C012             (stateless)
+C003 OKF Conformance ◀── C008, C009                   (stateless)
 C004 Source Retention ◀── C008, C005                  (stateless-ish source store)
 C005 Currency&Provenance ◀── all mutators             (reads C004)
 C006 Intake&Held-Aside ◀── C007, C012
 C007 Triage → C001, C002, C006, C008, C009
 C008 Integration → C002, C003, C004, C005, C009        (SOLE corpus writer)
-C009 Discovery&Index → (reads corpus)                  (read-only)
+C009 Discovery&Index → C003 (validate); reads corpus   (read-only)
 C010 Question Retrieval → (reads corpus)               (read-only)
 C011 Lifecycle → C002, C005, C008, C009
 C012 Coverage&Scope → C001, C002, C006, C008, C009

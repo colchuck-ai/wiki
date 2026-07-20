@@ -67,7 +67,7 @@ declared/persistent/in-corpus/revisable pattern, sibling to C002's envelope).
 ## Relationships
 
 - **Depends on:** nothing — the foundation (matches the frozen dependency
-  direction: `C001 ◀── C002, C007, C008, C011, C012`).
+  direction: `C001 ◀── C002, C007, C012`).
 - **Reports to:** `C005.record` for provenance. This is the append-only sink
   every actor reports to, not a downward structural dependency.
 - **Read by:**
@@ -75,9 +75,11 @@ declared/persistent/in-corpus/revisable pattern, sibling to C002's envelope).
   - **C007 Triage** — scope, significance, and duplication are all judged against it.
   - **C008 Integration** — does *not* read C001 directly; charter influence
     reaches C008 through `C002.evaluate` (which reads C001). C008's frozen §
-    lists no C001 call. (The terse arrow-block still shows `C001 ◀── C008`; that
-    is the reconciliation discrepancy noted for Phase 4.)
-  - **C011 Lifecycle** — relevance of retirement candidates is judged partly vs scope.
+    lists no C001 call, and the dependency arrow-block omits it accordingly.
+  - **C011 Lifecycle** — does *not* read C001 directly. Its retirement signals are
+    staleness / drift (`C005.currency`) and in-corpus supersession markers, and any
+    charter-relative call reaches it through `C002.evaluate`; scope-vs-charter judgment
+    is C012's, not C011's. C011's frozen § lists no C001 call.
   - **C012 Coverage & Scope** — coverage (scope areas vs index) and scope
     divergence (charter vs corpus) survey against it.
 

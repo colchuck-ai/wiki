@@ -25,8 +25,8 @@ mutable state.
 ## Decision
 [C008 Integration](../components/C008-integration.md) is the **only** component that
 mutates concept files. It exposes an intent-verb surface — `integrate`, `merge`,
-`deprecate`, `supersede`, `relocate`, `repair_links`, `flag` — and owns the edit behind
-each. Every other component that wants the corpus changed expresses intent through these
+`deprecate` (with an optional successor, which subsumes supersession), `relocate`,
+`repair_links`, `flag` — and owns the edit behind each. Every other component that wants the corpus changed expresses intent through these
 verbs (this is the engineering form of intent-driven authoring / assisted-upkeep-by-intent,
 O004-R001/R003).
 

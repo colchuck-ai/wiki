@@ -80,10 +80,12 @@ candidate is put to the governor, because C002 is the *only* place autonomy is d
   `C002.escalate(item, reason, evidence)`. Out-of-scope ambiguity is escalated for the
   steward, never auto-admitted (O008-R002).
 
-C007 **executes nothing**: `C008` writes the corpus, `C006` moves material to held-aside,
-`C002` carries the escalation. C007 only decides and routes, and reports its own
-recordable decision to `C005.record` where one is made (the executing component records
-the executed mutation).
+C007 **executes nothing**: `C008` writes the corpus, `C006` moves material to held-aside
+(and records that disposition), `C002` carries the escalation. C007 only decides and
+routes — it holds **no store and no provenance obligation of its own**. Each triage
+outcome is recorded by the component that executes it (`C006` hold-aside, `C008`
+integrate/merge, `C002` escalation), so C007 is not a `C005.record` caller — consistent
+with its dependency arrow, which lists no C005 edge.
 
 ## Relationships
 

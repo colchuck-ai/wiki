@@ -43,8 +43,8 @@ convention encapsulation — the contributor supplies intent, C003 supplies conf
 
 **`validate`** — check a `target` against the **pinned** spec and return `ok` or the
 list of violations. Two caller contexts, one behavior: C008 calls it **pre-write** (a
-write that would not validate does not commit), and C009/C012 call it for **audit** of
-already-written corpus. `validate` is read-only and side-effect-free; it neither
+write that would not validate does not commit), and C009 calls it for **audit** of
+already-written corpus (classifying dangling targets as malformed vs. merely absent). `validate` is read-only and side-effect-free; it neither
 repairs nor records — remediation is a separate act driven through C008.
 
 **`spec_version`** — return the embedded pinned `Version`, so callers and provenance
@@ -73,12 +73,12 @@ rewritten. This is precisely the one-component blast radius the architecture pro
 ## Relationships
 
 - **Depends on nothing** below it — stateless, embeds its own format knowledge.
-- **Called by C008** (`apply` + `validate`, on every write) and by **C009 / C012**
+- **Called by C008** (`apply` + `validate`, on every write) and by **C009**
   (`validate`, for audit). Matches [INTERFACES.md](../INTERFACES.md) dependency
-  direction exactly: `C003 ◀── C008, C009, C012`.
+  direction exactly: `C003 ◀── C008, C009`.
 - It is the **only** component that embeds format rules. No caller re-implements or
   inspects OKF conventions; they express intent (C008) or request a report
-  (C009/C012). C003 owns the **semantic-portability** layer (open-format conformance);
+  (C009). C003 owns the **semantic-portability** layer (open-format conformance);
   the **substrate-portability** layer (plain-text + version control) is a property of
   how C008/C006 store the corpus, not of this component.
 
@@ -106,7 +106,7 @@ version-controlled, and validates against the pinned open-format spec*:
 
 - Every write goes through `apply`, and `validate` gates it, so newly authored content
   is conformant by construction; the O006 proxy trends up as a direct result.
-- `validate` gives C009/C012 an honest, current conformance signal over existing corpus
+- `validate` gives C009 an honest, current conformance signal over existing corpus
   (including newly-surfaced violations after a bump), so gaps are visible, not hidden.
 - A format-version bump is realized by editing **C003 only**; no other component
   changes, and the corpus remains plain-text and readable throughout the transition.

@@ -72,7 +72,7 @@ orphaned (this is the completeness cross-check behind the decomposition):
 | **Intake** | Any producer submits raw material; nothing is lost before triage | C006 |
 | **Triage** | Scope, duplication, significance → a disposition | C007 (reads C001), routes to C006/C008, escalates via C002 |
 | **Author** | Distill into a cited, grounded, cross-linked concept | C008 (calls C003, C004, C005) |
-| **Maintain** | Keep it current, on-scope, complete, high-signal | C011, C012, C004 (drift), C005 (currency) — all drive C008 by intent |
+| **Maintain** | Keep it current, on-scope, complete, high-signal | C011, C012 drive C008 by intent; C004 (drift) + C005 (currency) feed their signals |
 | **Discover** | Consumers browse, traverse, and query | C009, C010 |
 
 ## Standing services and the policy layer

@@ -53,6 +53,7 @@ Referenced by [INTERFACES.md](INTERFACES.md). Kept deliberately small.
 | `CurrencyStatus` | `{ recency, drift_status }` |
 | `Link` | `{ target, reason }` |
 | `RawMaterial` / `IntakeId` / `HeldId` | submitted material / its ids |
+| `HeldItem` | a held-aside entry (`RawMaterial` + reason + origin); C006 → C012 |
 | `ConceptId` | a concept's stable identity |
 
 `actor ∈ { wiki_auto, steward }`; `outcome ∈ { integrated, held_aside, merged,
@@ -61,11 +62,17 @@ deprecated, superseded, relocated, flagged, declared, revised }`. The last two a
 envelope (C002) — so policy-anchor changes record through the one provenance log rather
 than a separate history surface.
 
+A few types cross a boundary only as a single call's **return value** and are defined at
+their producing component rather than restated here: `Version` (C002/C003),
+`ConformantContent` (C003.apply), `SourceContent` (C004.resolve), `Recency` and
+`ProvenanceEntry` (C005). They are named in the [frozen interfaces](INTERFACES.md); the
+table above lists only the vocabulary that more than one component authors or matches on.
+
 ## The components
 
 Each entry: **role**, the **artifact it owns** (or "stateless"), why it is **deep**,
-who it **depends on / is driven by**, and the **requirements** it owns. Full specs are
-Phase 3 (`components/C0xx-*.md`, not yet written); this is the seed.
+who it **depends on / is driven by**, and the **requirements** it owns. The full specs
+are in [`components/C0xx-*.md`](components/); this section is the summary.
 
 ### C001 — Charter
 - **Owns:** the charter policy anchor (purpose + scope areas), in-corpus, revisable.
@@ -87,7 +94,7 @@ Phase 3 (`components/C0xx-*.md`, not yet written); this is the seed.
 - **Owns:** nothing persistent — **format knowledge** (stateless, deep by behavior).
 - **Deep:** the *single* place OKF structural + naming rules live; `apply`/`validate`
   against a pinned external spec, so a format bump is a one-component change.
-- **Driven by:** C008 (apply/validate), C009/C012 (audit).
+- **Driven by:** C008 (apply/validate), C009 (audit).
 - **Owns reqs:** O004-R002, O006-R002.
 
 ### C004 — Source Retention
@@ -123,13 +130,15 @@ Phase 3 (`components/C0xx-*.md`, not yet written); this is the seed.
 
 ### C008 — Integration
 - **Owns:** the concept corpus — **the sole writer.** Intent-verb surface
-  (integrate/merge/deprecate/supersede/relocate/repair_links/flag).
+  (integrate/merge/deprecate/relocate/repair_links/flag).
 - **Deep:** a lot of behavior (OKF-conformant editing, citation, author-time grounding
   check as an internal seam, cross-link authoring, provenance stamping, atomic commit)
   behind a handful of intent verbs. Every verb commits concept + provenance atomically.
 - **Depends on:** C002, C003, C004, C005, C009. **Driven by:** C007, C011, C012 (intent).
 - **Owns reqs:** O001-R001, O003-R001, O004-R001, O005-R002 (write), O006-R001/R003,
-  O009-R001, O009-R002. See [ADR001](drs/ADR001-integration-sole-corpus-writer.md).
+  O009-R001, O009-R002, O009-R003 (escalate half — shared with C002; see
+  [REQUIREMENT-MAP](REQUIREMENT-MAP.md#shared-ownership-notes-intentional-not-orphans)).
+  See [ADR001](drs/ADR001-integration-sole-corpus-writer.md).
 
 ### C009 — Discovery & Index
 - **Owns:** the navigable index + reason-annotated cross-link graph (materialized from

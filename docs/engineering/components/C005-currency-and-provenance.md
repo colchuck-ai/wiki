@@ -49,9 +49,12 @@ depending on a central store (preserves O006 portability).
 C005 appends it to the log file scoped to the target's directory. This is the *only*
 mutation of the provenance store — there is **no shared mutable state**, and no caller
 writes a log file itself. Called by **C008 on every corpus mutation** (as the atomic
-concept-file-plus-provenance commit — ADR001) and by **C007, C011, C012, C001, C002**
-on any other recordable action (hold-aside, retirement decision, scope flag, charter
-revision, escalation resolution). `record` appends and returns; it does not evaluate,
+concept-file-plus-provenance commit — ADR001) and by **C006, C011, C001, C002**
+on any other recordable action (C006: hold-aside/restore; C011: retirement decision;
+C001: charter declaration/revision; C002: envelope declaration/revision + escalation
+resolution). Pure decision modules do **not** call `record`: C007 executes nothing, so
+each triage outcome is recorded by its executor (C006 / C008 / C002), and a scope flag
+records through `C008.flag` — which is why neither C007 nor C012 is a `record` caller. `record` appends and returns; it does not evaluate,
 route, or diff anything.
 
 **`history`** replays the entries for a target (a concept, a directory, or the corpus)
@@ -89,7 +92,7 @@ Matches [INTERFACES.md → Dependency direction](../INTERFACES.md#dependency-dir
 - **Depends on:** **C004** only — `check_drift` (materialize drift), `resolve` is *not*
   called here. C005 sits above C004, below the mutators.
 - **Driven by (report to `record`):** all mutators — **C008** (every mutation),
-  **C007, C011, C012, C001, C002** (recordable actions). These are *inbound* intent
+  **C006, C011, C001, C002** (recordable actions). These are *inbound* intent
   calls; C005 calls none of them back.
 - **Read by:** **C011** — `currency` for staleness/drift retirement signals; and any
   **consumer** — `history` / `recency` / `currency` for the currency picture.
